@@ -9,6 +9,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Impermenance (non-persistent root (/))
     impermanence = {
       url = "github:nix-community/impermanence";
@@ -21,12 +26,13 @@
     };
 
     qnix-modules = {
-      url = "https://flakehub.com/f/QF0xB/qnix-modules-develop/0.1.17";
+      url = "git+ssh://git@github.com/QF0xB/qnix-modules.git?ref=develop"; # https://flakehub.com/f/QF0xB/qnix-modules-develop/0.0.1"; # /0.1.17";
 
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
       inputs.impermanence.follows = "impermanence";
       inputs.sops-nix.follows = "sops-nix";
+      inputs.nvf.follows = "nvf";
     };
   };
 

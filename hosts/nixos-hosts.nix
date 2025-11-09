@@ -40,7 +40,6 @@ let
         }
 
         ./${host}/configuration.nix
-        ./${host}/qnix.nix # <- Module options
         ./${host}/hardware.nix
 
         inputs.home-manager.nixosModules.home-manager
@@ -69,6 +68,8 @@ let
                 inputs.qnix-modules.homeManagerModules.qnix
                 ./${host}/home.nix
                 ./${host}/qnix.nix # <- Module options
+
+                inputs.nvf.homeManagerModules.default
               ];
             };
           };
