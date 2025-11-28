@@ -4,9 +4,17 @@
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
 
+    nixpkgs-stable = {
+      url = "github:NixOS/nixpkgs/nixos-25.05";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprlauncher = {
+      url = "github:hyprwm/hyprlauncher";
     };
 
     nvf = {
@@ -25,6 +33,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Global styling
+    stylix = {
+      url = "github:danth/stylix";
+    };
+
     qnix-modules = {
       url = "git+ssh://git@github.com/QF0xB/qnix-modules.git?ref=develop"; # https://flakehub.com/f/QF0xB/qnix-modules-develop/0.0.1"; # /0.1.17";
 
@@ -33,16 +46,33 @@
       inputs.impermanence.follows = "impermanence";
       inputs.sops-nix.follows = "sops-nix";
       inputs.nvf.follows = "nvf";
+      inputs.stylix.follows = "stylix";
+    };
+
+    qnix-pkgs = {
+      url = "github:qf0xb/qnix-pkgs";
     };
   };
 
   outputs =
-    { nixpkgs, ... }@inputs:
+    { nixpkgs, nixpkgs-stable, ... }@inputs:
     let
       system = "x86_64-linux";
+      stableOverlay = final: prev: {
+        stable = import nixpkgs-stable {
+          inherit system;
+          config = prev.config;
+        };
+      };
+
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+
+        overlays = [
+          inputs.qnix-pkgs.overlays.default
+          stableOverlay
+        ];
       };
 
       lib = inputs.qnix-modules.lib;

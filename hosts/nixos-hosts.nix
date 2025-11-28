@@ -77,6 +77,8 @@ let
 
         inputs.impermanence.nixosModules.impermanence # single-use root (/)
         inputs.sops-nix.nixosModules.sops # secret management
+        inputs.stylix.nixosModules.stylix # global style management
+        inputs.qnix-pkgs.nixosModules.default
 
         (lib.mkAliasOptionModule [ "hm" ] [ "home-manager" "users" user ])
 
