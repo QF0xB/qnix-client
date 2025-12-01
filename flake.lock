@@ -1,5 +1,26 @@
 {
   "nodes": {
+    "ags": {
+      "inputs": {
+        "astal": "astal",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764289441,
+        "narHash": "sha256-ak+lgFiYE5PHByN1/BRkO5JP498hno6Ix24C1Qf/vec=",
+        "owner": "Aylur",
+        "repo": "ags",
+        "rev": "e169694390548dfd38ff40f1ef2163d6c3ffe3ea",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Aylur",
+        "repo": "ags",
+        "type": "github"
+      }
+    },
     "aquamarine": {
       "inputs": {
         "hyprutils": [
@@ -30,6 +51,47 @@
       "original": {
         "owner": "hyprwm",
         "repo": "aquamarine",
+        "type": "github"
+      }
+    },
+    "astal": {
+      "inputs": {
+        "nixpkgs": [
+          "ags",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764173295,
+        "narHash": "sha256-Jh4VtPcK2Ov+RTcV9FtyQRsxiJmXFQGfqX6jjM7/mgc=",
+        "owner": "aylur",
+        "repo": "astal",
+        "rev": "7d1fac8a4b2a14954843a978d2ddde86168c75ef",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aylur",
+        "repo": "astal",
+        "type": "github"
+      }
+    },
+    "astal_2": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764173295,
+        "narHash": "sha256-Jh4VtPcK2Ov+RTcV9FtyQRsxiJmXFQGfqX6jjM7/mgc=",
+        "owner": "Aylur",
+        "repo": "astal",
+        "rev": "7d1fac8a4b2a14954843a978d2ddde86168c75ef",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Aylur",
+        "repo": "astal",
         "type": "github"
       }
     },
@@ -229,28 +291,6 @@
       }
     },
     "home-manager_2": {
-      "inputs": {
-        "nixpkgs": [
-          "qnix-modules",
-          "qnix-pkgs",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1740624780,
-        "narHash": "sha256-8TP61AI3QBQsjzVUQFIV8NoB5nbYfJB3iHczhBikDkU=",
-        "owner": "nix-community",
-        "repo": "home-manager",
-        "rev": "b8869e4ead721bbd4f0d6b927e8395705d4f16e6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "home-manager",
-        "type": "github"
-      }
-    },
-    "home-manager_3": {
       "inputs": {
         "nixpkgs": [
           "qnix-pkgs",
@@ -588,11 +628,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1740367490,
-        "narHash": "sha256-WGaHVAjcrv+Cun7zPlI41SerRtfknGQap281+AakSAw=",
+        "lastModified": 1762111121,
+        "narHash": "sha256-4vhDuZ7OZaZmKKrnDpxLZZpGIJvAeMtK6FKLJYUtAdw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "0196c0175e9191c474c26ab5548db27ef5d34b05",
+        "rev": "b3d51a0365f6695e7dd5cdf3e180604530ed33b4",
         "type": "github"
       },
       "original": {
@@ -685,37 +725,22 @@
     },
     "qnix-modules": {
       "inputs": {
-        "home-manager": [
-          "home-manager"
-        ],
-        "impermanence": [
-          "impermanence"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "nvf": [
-          "nvf"
-        ],
-        "qnix-pkgs": "qnix-pkgs",
-        "sops-nix": [
-          "sops-nix"
-        ],
-        "stylix": [
-          "stylix"
+        "nixpkgs": "nixpkgs_3",
+        "qnix-pkgs": [
+          "qnix-pkgs"
         ]
       },
       "locked": {
-        "lastModified": 1764336416,
-        "narHash": "sha256-x4clfgXcoSB2wBVEBjLNGWZiD/6TqnFnL0z0j98dI1Q=",
-        "ref": "develop",
-        "rev": "993e36f959fb97573cb2741475c52483fee74784",
-        "revCount": 128,
+        "lastModified": 1764596317,
+        "narHash": "sha256-q0ufhO4IYm7E5IPsC+Y7970/x2CeSRQO5QuqtHl+9cQ=",
+        "ref": "feature/ags",
+        "rev": "547f2e2cb51152ea327771f3846d79e3411165a4",
+        "revCount": 171,
         "type": "git",
         "url": "ssh://git@github.com/QF0xB/qnix-modules.git"
       },
       "original": {
-        "ref": "develop",
+        "ref": "feature/ags",
         "type": "git",
         "url": "ssh://git@github.com/QF0xB/qnix-modules.git"
       }
@@ -723,25 +748,6 @@
     "qnix-pkgs": {
       "inputs": {
         "home-manager": "home-manager_2",
-        "nixpkgs": "nixpkgs_3"
-      },
-      "locked": {
-        "lastModified": 1742378945,
-        "narHash": "sha256-BOULi8A6UU5lhBl/m4QGeiPz3jseB0HT0dCHjR2hHU4=",
-        "owner": "stormfox2",
-        "repo": "qnix-pkgs",
-        "rev": "049cf00c78894af31486eff50fb8bccb6f95c5a9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "stormfox2",
-        "repo": "qnix-pkgs",
-        "type": "github"
-      }
-    },
-    "qnix-pkgs_2": {
-      "inputs": {
-        "home-manager": "home-manager_3",
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
@@ -760,6 +766,8 @@
     },
     "root": {
       "inputs": {
+        "ags": "ags",
+        "astal": "astal_2",
         "home-manager": "home-manager",
         "hyprlauncher": "hyprlauncher",
         "impermanence": "impermanence",
@@ -767,7 +775,7 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "nvf": "nvf",
         "qnix-modules": "qnix-modules",
-        "qnix-pkgs": "qnix-pkgs_2",
+        "qnix-pkgs": "qnix-pkgs",
         "sops-nix": "sops-nix",
         "stylix": "stylix"
       }

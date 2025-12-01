@@ -38,15 +38,22 @@
       url = "github:danth/stylix";
     };
 
-    qnix-modules = {
-      url = "git+ssh://git@github.com/QF0xB/qnix-modules.git?ref=develop"; # https://flakehub.com/f/QF0xB/qnix-modules-develop/0.0.1"; # /0.1.17";
-
+    # Astal (for AGS/AstalHyprland, etc.)
+    astal = {
+      url = "github:Aylur/astal";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-      inputs.impermanence.follows = "impermanence";
-      inputs.sops-nix.follows = "sops-nix";
-      inputs.nvf.follows = "nvf";
-      inputs.stylix.follows = "stylix";
+    };
+
+    # Astal (for AGS/AstalHyprland, etc.)
+    ags = {
+      url = "github:Aylur/ags";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    qnix-modules = {
+      url = "git+ssh://git@github.com/QF0xB/qnix-modules.git?ref=feature/ags";
+
+      inputs.qnix-pkgs.follows = "qnix-pkgs";
     };
 
     qnix-pkgs = {

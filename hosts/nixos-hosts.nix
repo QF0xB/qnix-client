@@ -20,8 +20,9 @@ let
     lib.nixosSystem {
       inherit pkgs;
 
-      specialArgs = specialArgs // {
+      specialArgs = specialArgs  // {
         inherit
+          inputs
           host
           isVm
           isInstall
@@ -53,6 +54,7 @@ let
 
             extraSpecialArgs = specialArgs // {
               inherit
+                inputs
                 host
                 isVm
                 isInstall
@@ -70,6 +72,7 @@ let
                 ./${host}/qnix.nix # <- Module options
 
                 inputs.nvf.homeManagerModules.default
+                inputs.ags.homeManagerModules.default
               ];
             };
           };
