@@ -5,7 +5,7 @@
     };
 
     nixpkgs-stable = {
-      url = "github:NixOS/nixpkgs/nixos-25.05";
+      url = "github:NixOS/nixpkgs/nixos-25.11";
     };
 
     home-manager = {
@@ -36,6 +36,7 @@
     # Global styling
     stylix = {
       url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Astal (for AGS/AstalHyprland, etc.)
@@ -54,6 +55,12 @@
       url = "git+ssh://git@github.com/QF0xB/qnix-modules.git?ref=feature/ags";
 
       inputs.qnix-pkgs.follows = "qnix-pkgs";
+    };
+
+    qnix-ags = {
+      url = "git+ssh://git@github.com/QF0xB/qnix-ags.git?ref=develop";
+
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     qnix-pkgs = {
