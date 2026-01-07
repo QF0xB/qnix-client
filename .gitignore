@@ -1,0 +1,6 @@
+.direnv
+
+*.qcow2
+*.fd
+
+result

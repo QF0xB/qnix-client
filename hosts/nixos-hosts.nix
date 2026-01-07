@@ -15,6 +15,7 @@ let
       isInstall ? false,
       isLaptop ? false,
       isNixOS ? true,
+      loadOptions ? false,
       extraConfig ? { },
     }:
     lib.nixosSystem {
@@ -31,12 +32,14 @@ let
           isLaptop
           isNixOS
           user
+          loadOptions
           ;
         dots = "/persist/home/${user}/projects/qnix/qnix-client";
       };
 
       modules = [
         # Host-specific configuration
+        # ./${host}/qnix.nix
         ./${host}/configuration.nix
         ./${host}/hardware.nix
 
@@ -61,24 +64,25 @@ let
               # Full inputs needed for imports
               inherit inputs;
               # categories and filtered inputs are already in specialArgs from flake.nix
-              inherit
+              inherit 
                 host
                 isVm
                 isInstall
                 isLaptop
                 isNixOS
                 user
+                loadOptions
                 ;
               dots = "/persist/home/${user}/projects/qnix/qnix-client";
             };
 
             users.${user} = {
               imports = [
-                # Load QNix Home Manager modules (will use categories from specialArgs)
                 inputs.qnix-modules.homeManagerModules.qnix
+                # Load QNix Home Manager modules (will use categories from specialArgs)
                 ./${host}/home.nix
                 ./${host}/qnix.nix  # qnix.* options for this host
-
+                
                 # Direct imports for modules that need it (if not handled by qnix-modules)
                 inputs.ags.homeManagerModules.default
               ];

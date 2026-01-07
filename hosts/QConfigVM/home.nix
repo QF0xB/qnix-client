@@ -1,8 +1,8 @@
 { lib, user, ... }:
 
 {
-  home.username = user;
-  home.homeDirectory = lib.mkForce "/home/${user}";
+  home.username = "q.braendli";
+  home.homeDirectory = lib.mkForce "/home/q.braendli";
   home.stateVersion = "24.11";
 }
 

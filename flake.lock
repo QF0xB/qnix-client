@@ -234,8 +234,8 @@
     },
     "qnix-modules": {
       "locked": {
-        "lastModified": 1767671965,
-        "narHash": "sha256-7p5KSx/BSugvlNjsWkx74NKWRwDJr8b7+2+xcAud5xU=",
+        "lastModified": 1767792956,
+        "narHash": "sha256-9AUbSg+bODphFemnRgdNC1mEdzenOI8P+pmkapPsF2Y=",
         "path": "/home/lcqbraendli/projects/qnix/qnix-modules",
         "type": "path"
       },
