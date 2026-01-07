@@ -1,6 +1,14 @@
+# Development
 .direnv
+result
+result-*
 
+# VM disk images
 *.qcow2
+*.qcow2.*
+
+# EFI variables
 *.fd
 
-result
+# Nix build artifacts
+*.drv
