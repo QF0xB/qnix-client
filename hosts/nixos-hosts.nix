@@ -93,6 +93,8 @@ let
         # Other modules
         inputs.impermanence.nixosModules.impermanence
         inputs.disko.nixosModules.disko
+        # Import host-specific disko configuration if it exists
+        (lib.optional (builtins.pathExists (./${host}/disko.nix)) (./${host}/disko.nix))
         inputs.sops-nix.nixosModules.sops
         inputs.qnix-pkgs.nixosModules.default
 
