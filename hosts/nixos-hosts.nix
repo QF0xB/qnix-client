@@ -103,7 +103,7 @@ let
 
         extraConfig
       ]
-      ++ lib.optional (builtins.pathExists ./${host}/disko.nix) [ ./${host}/disko.nix ];
+      ++ lib.optional (builtins.pathExists ./${host}/disko.nix) ./${host}/disko.nix ;
     };
 in
 {
