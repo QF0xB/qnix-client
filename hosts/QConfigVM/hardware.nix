@@ -49,6 +49,39 @@ in
   # VM filesystem configuration for bootloader testing
   virtualisation.vmVariant = variantConfig;
   virtualisation.vmVariantWithBootLoader = variantConfig;
+
+  # File systems (for real installations, not VM)
+  # These match what disko creates: ZFS datasets and boot partition
+  fileSystems = {
+    "/" = {
+      device = "zroot/root";
+      fsType = "zfs";
+      neededForBoot = true;
+    };
+
+    "/boot" = {
+      device = "/dev/disk/by-partlabel/ESP";
+      fsType = "vfat";
+      neededForBoot = true;
+    };
+
+    "/nix" = {
+      device = "zroot/nix";
+      fsType = "zfs";
+      neededForBoot = true;
+    };
+
+    "/persist" = {
+      device = "zroot/persist";
+      fsType = "zfs";
+      neededForBoot = true;
+    };
+
+    "/cache" = {
+      device = "zroot/cache";
+      fsType = "zfs";
+    };
+  };
 }
 
 

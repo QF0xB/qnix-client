@@ -102,8 +102,7 @@ let
         (lib.mkAliasOptionModule [ "hm" ] [ "home-manager" "users" user ])
 
         extraConfig
-      ]
-      ++ lib.optional (builtins.pathExists ./${host}/disko.nix) ./${host}/disko.nix ;
+      ];
     };
 in
 {
