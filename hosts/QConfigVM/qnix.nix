@@ -2,22 +2,10 @@
 {
   # QNix module options for QConfigVM
   qnix = {
-    # Enable modules you want
-    # Example: Core modules
-    # sops.enable = true;
-    # user.enable = true;
-    
-    # Example: Desktop modules
-    # firefox.enable = true;
-    # terminal.enable = true;
-    # hyprland.enable = true;
-    # ags.enable = true;
-    # styling.enable = true;
-    
-    # Other qnix.* options...
     core = {
       boot = {
-        "systemd-boot".enable = true;
+        grub.enable = true;
+        encrypted = false;
       };
       user = {
         enable = true;

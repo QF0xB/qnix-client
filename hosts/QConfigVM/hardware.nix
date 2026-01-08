@@ -1,46 +1,54 @@
-{ lib, ... }:
+{ lib, pkgs, config, ... }:
 
-{
-  # Hardware-specific configuration for QConfigVM
-  # VM-specific settings can go here
+let
+  # Path to persist.qcow2 - adjust if the file is in a different location
+  # This uses an absolute path that should work regardless of where the VM is run from
+  persistImagePath = "/home/lcqbraendli/projects/qnix/qnix-client/persist.qcow2";
   
-  # VM filesystem configuration for bootloader testing
-  virtualisation.vmVariant = {
+  variantConfig = {
     virtualisation = {
-      memorySize = 2048; # 2GB RAM
-      cores = 2;
+      memorySize = 8192; # 8GB RAM
+      cores = 4;
       
       # Forward SSH port
       forwardPorts = [
         { from = "host"; host.port = 2222; guest.port = 22; }
       ];
-    };
+      
+      # Use VGA graphics (same as bootloader for consistency)
+      graphics = true;
+      qemu = {
+        options = [
+          "-vga" "std"  # Standard VGA (matches bootloader)
+          "-display" "sdl"  # SDL display backend (fixes console rendering issues)
+          # Use existing persist.qcow2 file as /dev/vdb
+          "-drive" "file=${persistImagePath},if=virtio,format=qcow2,index=1"
+        ];
+      };
 
-    # Filesystem setup for VM (needed for bootloader)
-    # Root filesystem (tmpfs - ephemeral)
-    fileSystems."/" = {
-      device = "tmpfs";
-      fsType = "tmpfs";
-      options = [ "size=2G" "mode=755" ];
-    };
+      useDefaultFilesystems = true;
 
-    # Boot partition (EFI system partition)
-    # This is where the bootloader will be installed
-    fileSystems."/boot" = {
-      device = "/dev/vda1";
-      fsType = "vfat";
-      # Auto-format on first boot
-      autoFormat = true;
-      neededForBoot = true;
-    };
-
-    # Optional: Persist directory
-    fileSystems."/persist" = {
-      device = "/dev/vda2";
-      fsType = "ext4";
-      autoFormat = true;
-      neededForBoot = false;
+      fileSystems."/persist" = {
+        device = "/dev/vdb1";
+        fsType = "ext4";
+        autoFormat = true;
+        neededForBoot = true;
+      };
     };
   };
+in
+{
+  # QEMU guest services for better VM integration
+  services.qemuGuest.enable = true;
+  
+  # Use VGA console (same as bootloader) for consistent rendering
+  boot.kernelParams = [ 
+    "console=tty0"  # VGA console (matches bootloader)
+  ];
+
+  # VM filesystem configuration for bootloader testing
+  virtualisation.vmVariant = variantConfig;
+  virtualisation.vmVariantWithBootLoader = variantConfig;
 }
+
 

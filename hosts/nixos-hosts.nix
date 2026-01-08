@@ -92,6 +92,7 @@ let
 
         # Other modules
         inputs.impermanence.nixosModules.impermanence
+        inputs.disko.nixosModules.disko
         inputs.sops-nix.nixosModules.sops
         inputs.qnix-pkgs.nixosModules.default
 

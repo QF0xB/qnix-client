@@ -55,6 +55,11 @@
     qnix-pkgs = {
       url = "github:qf0xb/qnix-pkgs";
     };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -110,6 +115,9 @@
       # Build VMs with bootloader support for testing boot configurations
       # Usage: nix build .#vms.QConfigVM && ./result/bin/run-QConfigVM-vm
       vms = lib.mapAttrs (name: config:
+        config.config.system.build.vm
+      ) nixosConfs;
+      vmsb = lib.mapAttrs (name: config:
         config.config.system.build.vmWithBootLoader
       ) nixosConfs;
     };
