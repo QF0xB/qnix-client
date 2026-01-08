@@ -4,7 +4,7 @@
   qnix = {
     core = {
       boot = {
-        grub.enable = true;
+        "systemd-boot".enable = true;
         encrypted = false;
       };
       user = {
