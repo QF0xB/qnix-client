@@ -44,6 +44,7 @@ in
   # Use VGA console (same as bootloader) for consistent rendering
   boot.kernelParams = [ 
     "console=tty0"  # VGA console (matches bootloader)
+    "systemd.log_level=debug" "systemd.log_target=console"
   ];
 
   # VM filesystem configuration for bootloader testing
