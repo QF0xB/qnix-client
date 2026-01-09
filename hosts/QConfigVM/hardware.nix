@@ -1,4 +1,4 @@
-{ lib, pkgs, config, ... }:
+{ lib, pkgs, config, modulesPath, ... }:
 
 let
   # Path to persist.qcow2 - adjust if the file is in a different location
@@ -38,6 +38,16 @@ let
   };
 in
 {
+
+  imports =
+  [ (modulesPath + "/profiles/qemu-guest.nix")
+  ];
+
+  boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
+
   # QEMU guest services for better VM integration
   services.qemuGuest.enable = true;
   
