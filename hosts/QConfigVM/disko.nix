@@ -1,9 +1,18 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
+
+let 
+  isImageBuild = true; # builtins.getEnv "IS_IMAGE_BUILD" == "1";
+
+# This is a placeholder for the LUKS password file that is created during the image build
+  imageLuksPasswordFile = pkgs.writeText "luks-password" "changeme";
+
+in
 {
   disko.devices = {
     disk.main = {
       type = "disk";
       device = "/dev/vda";
+      imageSize = "10G";
 
       content = {
         type = "gpt";
@@ -20,12 +29,12 @@
               };
             };
           }
-          // {
-            swap = {
-              size = "4G";
-              type = "8200";
-              content = { type = "swap"; };
-            };
+          // lib.optionalAttrs (!isImageBuild) {
+          swap = {
+            size = "4G";
+            type = "8200";
+            content = { type = "swap"; };
+          };
           }
           // {
             root = {
@@ -35,9 +44,10 @@
               content = {
                 type = "luks";
                 name = "cryptroot"; # /dev/mapper/cryptroot
-                passwordFile = "/tmp/luks-password"; # Only used during installation
-                settings = {
-                  keyFile = null;
+                passwordFile = if isImageBuild then "${imageLuksPasswordFile}" else "/tmp/luks-password"; # Only used during installation
+                settings = lib.optionalAttrs isImageBuild {
+                  keyFile = "${imageLuksPasswordFile}";
+                } // {
                   allowDiscards = true;
                 };
                 content = {

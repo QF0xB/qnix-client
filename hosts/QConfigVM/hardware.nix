@@ -49,6 +49,17 @@ in
   # VM filesystem configuration for bootloader testing
   virtualisation.vmVariant = variantConfig;
   virtualisation.vmVariantWithBootLoader = variantConfig;
+  virtualisation.vmVariantWithDisko = {
+    virtualisation = {
+      graphics = true;
+      qemu = {
+        options = [
+          "-vga" "std"  # Standard VGA (matches bootloader)
+          "-display" "sdl"  # SDL display backend (fixes console rendering issues)
+        ];
+      };
+    };
+  };
 }
 
 
