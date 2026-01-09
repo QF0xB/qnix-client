@@ -1,10 +1,10 @@
-{ lib, pkgs, ... }:
+{ lib, ... }:
 
 let 
   isImageBuild = true; # builtins.getEnv "IS_IMAGE_BUILD" == "1";
 
 # This is a placeholder for the LUKS password file that is created during the image build
-  imageLuksPasswordFile = pkgs.writeText "luks-password" "changeme";
+  # imageLuksPasswordFile = pkgs.writeText "luks-password" "changeme";
 
 in
 {
@@ -44,10 +44,9 @@ in
               content = {
                 type = "luks";
                 name = "cryptroot"; # /dev/mapper/cryptroot
-                passwordFile = if isImageBuild then "${imageLuksPasswordFile}" else "/tmp/luks-password"; # Only used during installation
-                settings = lib.optionalAttrs isImageBuild {
-                  keyFile = "${imageLuksPasswordFile}";
-                } // {
+                passwordFile = "/tmp/luks-password"; #if isImageBuild then "${imageLuksPasswordFile}" else "/tmp/luks-password"; # Only used during installation
+                settings = {
+                  keyFile = "/tmp/luks-password";
                   allowDiscards = true;
                 };
                 content = {
