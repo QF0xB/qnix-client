@@ -94,16 +94,15 @@ let
         inputs.impermanence.nixosModules.impermanence
         inputs.disko.nixosModules.disko
 
-        # Import host-specific disko configuration if it exists
-        (lib.optional (builtins.pathExists ./${host}/disko.nix) ./${host}/disko.nix)
-
         inputs.sops-nix.nixosModules.sops
         inputs.qnix-pkgs.nixosModules.default
 
         (lib.mkAliasOptionModule [ "hm" ] [ "home-manager" "users" user ])
 
         extraConfig
-      ];
+      ]
+      # Import host-specific disko configuration if it exists
+      ++ lib.optional (builtins.pathExists ./${host}/disko.nix) ./${host}/disko.nix;
     };
 in
 {
