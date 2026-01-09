@@ -36,6 +36,11 @@
                 type = "luks";
                 name = "cryptroot"; # /dev/mapper/cryptroot
                 passwordFile = "/tmp/luks-password";
+                settings = {
+                  keyFile = null;
+                  fallbackToPassword = true;
+                  allowDiscards = true;
+                };
                 content = {
                   type = "zfs";
                   pool = "zroot";
