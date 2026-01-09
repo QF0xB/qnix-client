@@ -31,6 +31,7 @@
             root = {
               size = "100%";
               type = "8309"; # LUKS encrypted ZFS partition
+              partlabel = "disk-main-root";
 
               content = {
                 type = "luks";

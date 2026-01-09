@@ -5,7 +5,7 @@
     core = {
       boot = {
         "systemd-boot".enable = true;
-        encrypted = false;
+        encrypted = true;
       };
       user = {
         enable = true;
