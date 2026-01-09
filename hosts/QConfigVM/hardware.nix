@@ -49,7 +49,6 @@ in
   # VM filesystem configuration for bootloader testing
   virtualisation.vmVariant = variantConfig;
   virtualisation.vmVariantWithBootLoader = variantConfig;
-  };
 }
 
 
