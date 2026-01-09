@@ -35,6 +35,7 @@
               content = {
                 type = "luks";
                 name = "cryptroot"; # /dev/mapper/cryptroot
+                passwordFile = "/tmp/luks-password";
                 content = {
                   type = "zfs";
                   pool = "zroot";
