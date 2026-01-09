@@ -35,10 +35,9 @@
               content = {
                 type = "luks";
                 name = "cryptroot"; # /dev/mapper/cryptroot
-                passwordFile = "/tmp/luks-password";
+                passwordFile = "/tmp/luks-password"; # Only used during installation
                 settings = {
                   keyFile = null;
-                  fallbackToPassword = true;
                   allowDiscards = true;
                 };
                 content = {
