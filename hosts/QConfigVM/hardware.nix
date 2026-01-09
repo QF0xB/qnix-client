@@ -48,9 +48,6 @@ in
     "systemd.log_level=debug"
   ];
 
-  boot.initrd.systemd.debugShell = true;
-
-
   # VM filesystem configuration for bootloader testing
   virtualisation.vmVariant = variantConfig;
   virtualisation.vmVariantWithBootLoader = variantConfig;
