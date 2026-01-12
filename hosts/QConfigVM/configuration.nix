@@ -1,25 +1,38 @@
-{ pkgs, lib, user, ... }:
+{
+  pkgs,
+  lib,
+  user,
+  ...
+}:
 
 {
   networking.hostName = "QConfigVM";
-  networking.hostId = "01234567";  # Generate with: head -c 8 /etc/machine-id
+  networking.hostId = "01234567"; # Generate with: head -c 8 /etc/machine-id
 
   system.stateVersion = "24.11";
 
   # Enable nix-command experimental feature in the VM
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
     };
   };
+
+  boot.loader.timeout = lib.mkForce 0;
+
+  environment.systemPackages = with pkgs; [
+    lunarvim
+  ];
 
   # Enable SSH for VM access (better than buggy console)
   services.openssh = {
     enable = true;
     settings = {
-      PermitRootLogin = "yes";  # For VM testing
+      PermitRootLogin = "yes"; # For VM testing
       PasswordAuthentication = true;
     };
   };
 }
-
