@@ -25,12 +25,6 @@
   sops.secrets.up.neededForUsers = true;
   sops.age.keyFile = lib.mkForce "/home/q.braendli/.config/sops/age/keys.txt";
 
-  users.users.mic92 = {
-    isNormalUser = true;
-
-    hashedPasswordFile = config.sops.secrets.up.path;
-  };
-
   environment.systemPackages = with pkgs; [
     lunarvim
   ];

@@ -40,7 +40,9 @@ let
       modules = [
         # Host-specific configuration
         # ./${host}/qnix.nix
+
         ./${host}/configuration.nix
+        ./${host}/qnix.nix # qnix.* options for this host
         ./${host}/hardware.nix
 
         # Load QNix modules (will use categories from specialArgs)
@@ -74,6 +76,7 @@ let
                 loadOptions
                 ;
               dots = "/persist/home/${user}/projects/qnix/qnix-client";
+
             };
 
             users.${user} = {
@@ -81,7 +84,6 @@ let
                 inputs.qnix-modules.homeManagerModules.qnix
                 # Load QNix Home Manager modules (will use categories from specialArgs)
                 ./${host}/home.nix
-                ./${host}/qnix.nix # qnix.* options for this host
 
                 # Direct imports for modules that need it (if not handled by qnix-modules)
                 inputs.ags.homeManagerModules.default
