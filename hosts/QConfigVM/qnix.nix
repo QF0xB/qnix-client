@@ -7,6 +7,9 @@
         "systemd-boot".enable = true;
         encrypted = true;
       };
+      impermanence = {
+        enable = true;
+      };
       starship.qnixFormat = false;
       user = {
         enable = true;
