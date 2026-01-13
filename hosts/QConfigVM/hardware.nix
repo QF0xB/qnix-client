@@ -33,8 +33,6 @@ let
           "std" # Standard VGA (matches bootloader)
           "-display"
           "sdl" # SDL display backend (fixes console rendering issues)
-          # Use existing persist.qcow2 file as /dev/vdb
-          "-drive"
         ];
       };
 
