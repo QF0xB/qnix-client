@@ -64,7 +64,7 @@ let
               # Full inputs needed for imports
               inherit inputs;
               # categories and filtered inputs are already in specialArgs from flake.nix
-              inherit 
+              inherit
                 host
                 isVm
                 isInstall
@@ -81,10 +81,12 @@ let
                 inputs.qnix-modules.homeManagerModules.qnix
                 # Load QNix Home Manager modules (will use categories from specialArgs)
                 ./${host}/home.nix
-                ./${host}/qnix.nix  # qnix.* options for this host
-                
+                ./${host}/qnix.nix # qnix.* options for this host
+
                 # Direct imports for modules that need it (if not handled by qnix-modules)
                 inputs.ags.homeManagerModules.default
+
+                inputs.nvf.homeManagerModules.default
               ];
             };
           };
@@ -93,6 +95,7 @@ let
         # Other modules
         inputs.impermanence.nixosModules.impermanence
         inputs.disko.nixosModules.disko
+
         inputs.stylix.nixosModules.stylix
 
         inputs.sops-nix.nixosModules.sops
@@ -109,7 +112,7 @@ in
 {
   # Default host: QConfigVM (VM for testing configurations)
   QConfigVM = mkNixosConfiguration "QConfigVM" { isVm = true; };
-  
+
   # Add more hosts as needed:
   # QPC = mkNixosConfiguration "QPC" { };
   # QPC-install = mkNixosConfiguration "QPC" { isInstall = true; };
@@ -119,4 +122,3 @@ in
   #   isLaptop = true;
   # };
 }
-

@@ -21,8 +21,7 @@
     };
   };
 
-  boot.loader.timeout = lib.mkForce 0;
-
+  
   environment.systemPackages = with pkgs; [
     lunarvim
   ];

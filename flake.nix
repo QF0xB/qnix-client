@@ -38,6 +38,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # NVF (Neovim File Manager)
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Global styling
     stylix = {
       url = "github:danth/stylix";
@@ -121,11 +127,7 @@
 
       # Build VMs with bootloader support for testing boot configurations
       # Usage: nix build .#vms.QConfigVM && ./result/bin/run-QConfigVM-vm
-      vms = lib.mapAttrs (name: config:
-        config.config.system.build.vm
-      ) nixosConfs;
-      vmsb = lib.mapAttrs (name: config:
-        config.config.system.build.vmWithBootLoader
-      ) nixosConfs;
+      vms = lib.mapAttrs (name: config: config.config.system.build.vm) nixosConfs;
+      vmsb = lib.mapAttrs (name: config: config.config.system.build.vmWithBootLoader) nixosConfs;
     };
 }
