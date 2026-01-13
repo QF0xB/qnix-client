@@ -13,6 +13,7 @@
         defaultExtraGroups = [
           "audio"
           "video"
+          "users"
         ];
         root = {
           enable = true;
