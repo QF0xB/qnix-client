@@ -21,13 +21,4 @@
       ];
     };
   };
-
-  # Enable SSH for VM access (better than buggy console)
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "yes"; # For VM testing
-      PasswordAuthentication = true;
-    };
-  };
 }
