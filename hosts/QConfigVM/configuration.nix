@@ -22,13 +22,6 @@
     };
   };
 
-  sops.secrets.up.neededForUsers = true;
-  sops.age.keyFile = lib.mkForce "/home/q.braendli/.config/sops/age/keys.txt";
-
-  environment.systemPackages = with pkgs; [
-    lunarvim
-  ];
-
   # Enable SSH for VM access (better than buggy console)
   services.openssh = {
     enable = true;
