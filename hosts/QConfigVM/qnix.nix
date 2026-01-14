@@ -25,7 +25,7 @@
         ];
         root = {
           enable = true;
-          initialHashedPassword = "$y$j9T$ZbVZ.p8xaCWvL.ULkJHAH1$4hwPBaX7Thcj41eFvpB2KfWVn0nKpCyalpkIigG6yc1";
+          password = "$y$j9T$ZbVZ.p8xaCWvL.ULkJHAH1$4hwPBaX7Thcj41eFvpB2KfWVn0nKpCyalpkIigG6yc1";
         };
         users = {
           "q.braendli" = {
