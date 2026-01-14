@@ -10,6 +10,11 @@
       impermanence = {
         enable = true;
       };
+      git = {
+        enable = true;
+        userName = "Quirin Brändli";
+        userEmail = "qbraendli@pm.me";
+      };
       starship.qnixFormat = false;
       user = {
         enable = true;
