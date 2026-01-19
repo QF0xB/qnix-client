@@ -40,7 +40,7 @@
 
     # NVF (Neovim File Manager)
     nvf = {
-      url = "github:notashelf/nvf";
+      url = "github:notashelf/nvf/8e031476d0d7f326b63c9c5522f840e2f8b724c0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -55,9 +55,9 @@
       # Recommended: Use FlakeHub (with version tag)
       # url = "flakehub:your-org/qnix-modules/v2025.01.15.1";
       # Or use github directly: "github:your-org/qnix-modules"
-      url = "github:QF0xB/qnix-modules/dev";
+      # url = "github:QF0xB/qnix-modules/dev";
       # Or use a local path during development:
-      # url = "path:/home/lcqbraendli/projects/qnix/qnix-modules";
+      url = "path:/home/lcqbraendli/projects/qnix/qnix-modules";
     };
 
     qnix-ags = {

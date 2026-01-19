@@ -114,6 +114,7 @@ in
 {
   # Default host: QConfigVM (VM for testing configurations)
   QConfigVM = mkNixosConfiguration "QConfigVM" { isVm = true; };
+  QTestVM = mkNixosConfiguration "QTestVM" { isVm = true; };
 
   # Add more hosts as needed:
   # QPC = mkNixosConfiguration "QPC" { };

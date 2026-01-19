@@ -6,40 +6,6 @@
   ...
 }:
 
-let
-  # Path to persist.qcow2 - adjust if the file is in a different location
-  # This uses an absolute path that should work regardless of where the VM is run from
-  persistImagePath = "/home/lcqbraendli/projects/qnix/qnix-client/persist.qcow2";
-
-  variantConfig = {
-    virtualisation = {
-      memorySize = 8192; # 8GB RAM
-      cores = 4;
-
-      # Forward SSH port
-      forwardPorts = [
-        {
-          from = "host";
-          host.port = 2222;
-          guest.port = 22;
-        }
-      ];
-
-      # Use VGA graphics (same as bootloader for consistency)
-      graphics = true;
-      qemu = {
-        options = [
-          "-vga"
-          "std" # Standard VGA (matches bootloader)
-          "-display"
-          "sdl" # SDL display backend (fixes console rendering issues)
-        ];
-      };
-
-      useDefaultFilesystems = true;
-    };
-  };
-in
 {
 
   imports = [
@@ -66,21 +32,4 @@ in
     "rd.systemd.show_status=1"
     "systemd.log_level=debug"
   ];
-
-  # VM filesystem configuration for bootloader testing
-  virtualisation.vmVariant = variantConfig;
-  virtualisation.vmVariantWithBootLoader = variantConfig;
-  virtualisation.vmVariantWithDisko = {
-    virtualisation = {
-      graphics = true;
-      qemu = {
-        options = [
-          "-vga"
-          "std" # Standard VGA (matches bootloader)
-          "-display"
-          "sdl" # SDL display backend (fixes console rendering issues)
-        ];
-      };
-    };
-  };
 }
