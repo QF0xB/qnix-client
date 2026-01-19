@@ -21,6 +21,7 @@
       ];
 
       netrc-file = "/etc/nix/garnix-netrc";
+      narinfo-cache-positive-ttl = 3600;
     };
   };
 }
