@@ -65,7 +65,7 @@
             owner = "root";
             group = "root";
 
-            wantedBy = [ "nix-daemon.service" ];
+            # wantedBy = [ "nix-daemon.service" ];
             restartUnits = [ "nix-daemon.service" ];
           };
         };
