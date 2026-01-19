@@ -57,6 +57,16 @@
             group = "root";
             neededForUsers = true;
           };
+          garnix-netrc = {
+            key = "garnix/netrc";
+
+            path = "/etc/nix/garnix-netrc";
+            mode = "0400";
+            owner = "root";
+            group = "root";
+
+            neededBy = [ "nix-daemon.service" ];
+          };
         };
       };
 

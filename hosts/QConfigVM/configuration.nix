@@ -19,6 +19,8 @@
         "nix-command"
         "flakes"
       ];
+
+      netrc-file = "/etc/nix/garnix-netrc";
     };
   };
 }
