@@ -221,7 +221,7 @@
       vscode = {
         enable = true;
 
-        package = pkgs.cursor;
+        package = pkgs.code-cursor;
       };
 
       waypaper = {
