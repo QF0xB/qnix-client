@@ -62,6 +62,9 @@
 
     desktop.hyprdesktop = {
       enable = true;
+
+      ags.enable = false;
+      noctalia.enable = true;
     };
   };
 }
