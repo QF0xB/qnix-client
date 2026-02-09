@@ -200,12 +200,16 @@
       };
 
       hyprdesktop = {
+	enable = true;
+
         ags = {
           enable = false;
         };
 
         hyprsuite = {
-          enable = true;
+          hyprland = { 
+            enable = true;
+	  };
         };
 
         noctalia = {
