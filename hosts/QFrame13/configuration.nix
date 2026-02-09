@@ -8,7 +8,7 @@
 
 {
   networking.hostName = "QFrame13";
-  networking.hostId = ""; # Generate with: head -c 8 /etc/machine-id
+  networking.hostId = "a8b0cd00"; # Generate with: head -c 8 /etc/machine-id
 
   system.stateVersion = "24.11";
 
