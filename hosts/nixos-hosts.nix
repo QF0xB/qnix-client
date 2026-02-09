@@ -116,6 +116,10 @@ in
   QConfigVM = mkNixosConfiguration "QConfigVM" { isVm = true; };
   QTestVM = mkNixosConfiguration "QTestVM" { isVm = true; };
 
+  QFrame13 = mkNixosConfiguration "QFrame13" { isLaptop = true; };
+  QPCv1 = mkNixosConfiguration "QPCv1" { };
+  QPCv2 = mkNixosConfiguration "QPCv2" { };
+
   # Add more hosts as needed:
   # QPC = mkNixosConfiguration "QPC" { };
   # QPC-install = mkNixosConfiguration "QPC" { isInstall = true; };
