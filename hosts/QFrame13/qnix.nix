@@ -200,8 +200,6 @@
       };
 
       hyprdesktop = {
-        enable = true;
-
         ags = {
           enable = false;
         };
