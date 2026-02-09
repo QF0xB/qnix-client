@@ -38,6 +38,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Hardware Optimisation
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware";
+    };
+
     # NVF (Neovim File Manager)
     nvf = {
       url = "github:notashelf/nvf/8e031476d0d7f326b63c9c5522f840e2f8b724c0";
