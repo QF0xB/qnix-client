@@ -61,9 +61,6 @@
 
         nm = {
           enable = true;
-          extraPlugins = [
-            "nm-openvpn"
-          ];
         };
       };
 
