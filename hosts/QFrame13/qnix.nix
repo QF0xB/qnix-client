@@ -35,6 +35,11 @@
         userEmail = "qbraendli@pm.me";
       };
 
+      gpg = {
+        enable = true;
+        pinentryPackage = pkgs.pinentry-qt;
+      };
+
       impermanence = {
         enable = true;
       };
@@ -197,7 +202,7 @@
       };
 
       hyprdesktop = {
-	enable = true;
+	      enable = true;
 
         ags = {
           enable = false;
@@ -222,6 +227,7 @@
         enable = true;
 
         package = pkgs.code-cursor;
+        agentPanelSize = 100;
       };
 
       waypaper = {

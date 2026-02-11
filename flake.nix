@@ -6,9 +6,9 @@
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
 
-    nixpkgs-stable = {
-      url = "github:NixOS/nixpkgs/nixos-25.11";
-    };
+    # nixpkgs-stable = {
+    #  url = "github:NixOS/nixpkgs/nixos-25.11";
+    #};
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -65,9 +65,9 @@
       # Recommended: Use FlakeHub (with version tag)
       # url = "flakehub:your-org/qnix-modules/v2025.01.15.1";
       # Or use github directly: "github:your-org/qnix-modules"
-      url = "github:QF0xB/qnix-modules/dev";
+      # url = "github:QF0xB/qnix-modules/dev";
       # Or use a local path during development:
-      # url = "path:/home/lcqbraendli/projects/qnix/qnix-modules";
+      url = "path:/home/q.braendli/projects/qnix/modules";
     };
 
     qnix-ags = {
@@ -95,16 +95,18 @@
   };
 
   outputs =
-    { nixpkgs, nixpkgs-stable, ... }@inputs:
+    { nixpkgs, ... }@inputs:
     let
       system = "x86_64-linux";
 
-      stableOverlay = final: prev: {
-        stable = import nixpkgs-stable {
-          inherit system;
-          config = prev.config;
+      /*
+        stableOverlay = final: prev: {
+          stable = import nixpkgs-stable {
+            inherit system;
+            config = prev.config;
+          };
         };
-      };
+      */
 
       pkgs = import nixpkgs {
         inherit system;
@@ -112,7 +114,7 @@
 
         overlays = [
           inputs.qnix-pkgs.overlays.default
-          stableOverlay
+          #stableOverlay
         ];
       };
 

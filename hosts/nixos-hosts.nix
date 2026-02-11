@@ -34,7 +34,7 @@ let
           user
           loadOptions
           ;
-        dots = "/persist/home/${user}/projects/qnix/qnix-client";
+        dots = "/persist/home/${user}/projects/qnix/client";
       };
 
       modules = [
@@ -49,7 +49,9 @@ let
         inputs.qnix-modules.nixosModules.qnix
 
         {
-          environment.systemPackages = [ pkgs.fh ];
+          qnix.persist.home.files = [
+            ".local/share/nix/trusted-settings.json"
+          ];
         }
 
         # Home Manager
@@ -75,7 +77,7 @@ let
                 user
                 loadOptions
                 ;
-              dots = "/persist/home/${user}/projects/qnix/qnix-client";
+              dots = "/persist/home/${user}/projects/qnix/client";
 
             };
 
