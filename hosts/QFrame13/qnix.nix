@@ -73,6 +73,17 @@
         enable = true;
       };
 
+      passwords = {
+        bitwarden = {
+          cli = {
+            enable = false;
+          };
+          desktop = {
+            enable = true;
+          };
+        };
+      };
+
       plymouth = {
         enable = true;
       };
@@ -135,6 +146,10 @@
 
       stylix = {
         enable = true;
+
+        wallpapers = {
+          enable = true;
+        };
       };
 
       user = {
@@ -202,16 +217,16 @@
       };
 
       hyprdesktop = {
-	      enable = true;
+        enable = true;
 
         ags = {
           enable = false;
         };
 
         hyprsuite = {
-          hyprland = { 
+          hyprland = {
             enable = true;
-	  };
+          };
         };
 
         noctalia = {
@@ -219,7 +234,29 @@
         };
       };
 
+      laptop-specifics = {
+        enable = true;
+      };
+
+      obsidian = {
+        enable = true;
+      };
+
+      periphery = {
+        thunderbolt = {
+          enable = true;
+        };
+      };
+
+      sound = {
+        enable = true;
+      };
+
       terminal = {
+        enable = true;
+      };
+
+      tidal-hifi = {
         enable = true;
       };
 
@@ -230,8 +267,8 @@
         agentPanelSize = 100;
       };
 
-      waypaper = {
-        enable = false;
+      xdg-folders = {
+        enable = true;
       };
     };
   };

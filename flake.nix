@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-unstable";
+      url = "github:NixOS/nixpkgs/nixos-unstable"; # nixos-unstable";
     };
 
     # nixpkgs-stable = {
@@ -45,7 +45,7 @@
 
     # NVF (Neovim File Manager)
     nvf = {
-      url = "github:notashelf/nvf/8e031476d0d7f326b63c9c5522f840e2f8b724c0";
+      url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
