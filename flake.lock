@@ -310,11 +310,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1770818644,
-        "narHash": "sha256-DYS4jIRpRoKOzJjnR/QqEd/MlT4OZZpt8CrBLv+cjsE=",
+        "lastModified": 1770936159,
+        "narHash": "sha256-INksKY2oo1hDNrDYh0r+uK0Fd4hBxkQwD4qQAl8lYyg=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "0acbd1180697de56724821184ad2c3e6e7202cd7",
+        "rev": "9bdb6938109884cb8b6a79ab79ba18e7b585a881",
         "type": "github"
       },
       "original": {
@@ -423,11 +423,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1770631810,
-        "narHash": "sha256-b7iK/x+zOXbjhRqa+XBlYla4zFvPZyU5Ln2HJkiSnzc=",
+        "lastModified": 1770882871,
+        "narHash": "sha256-nw5g+xl3veea+maxJ2/81tMEA/rPq9aF1H5XF35X+OE=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "2889685785848de940375bf7fea5e7c5a3c8d502",
+        "rev": "af04cb78aa85b2a4d1c15fc7270347e0d0eda97b",
         "type": "github"
       },
       "original": {
@@ -491,11 +491,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1770844534,
-        "narHash": "sha256-gnUJMDIJG57b/THJtuR29Qv6rLqBAWoCq8kdWDkFFAQ=",
+        "lastModified": 1770937328,
+        "narHash": "sha256-JtioBpwgFdcX2lNIoinA05WPrdF4o/KK7YOI/A6WKYo=",
         "owner": "noctalia-dev",
         "repo": "noctalia-shell",
-        "rev": "7eeaa452fd3946bf2b53f353606588cbe836c105",
+        "rev": "d7c244d10842dc96f98d4ae54713896bbfa11585",
         "type": "github"
       },
       "original": {
@@ -578,14 +578,18 @@
     },
     "qnix-modules": {
       "locked": {
-        "lastModified": 1770860742,
-        "narHash": "sha256-3uGmZZBMXg9vAwhXX42Zg4dE4a+Ji58Kgo/+1ORhe9k=",
-        "path": "/home/q.braendli/projects/qnix/modules",
-        "type": "path"
+        "lastModified": 1770940688,
+        "narHash": "sha256-ZImnmhvKjhK9C52HiXjp6s9OitXza9ZeK/47EPMGasY=",
+        "owner": "QF0xB",
+        "repo": "qnix-modules",
+        "rev": "ca3ea8da04d741712cbbe1e976ad92a72d003199",
+        "type": "github"
       },
       "original": {
-        "path": "/home/q.braendli/projects/qnix/modules",
-        "type": "path"
+        "owner": "QF0xB",
+        "ref": "dev",
+        "repo": "qnix-modules",
+        "type": "github"
       }
     },
     "qnix-pkgs": {
@@ -666,11 +670,11 @@
         "tinted-zed": "tinted-zed"
       },
       "locked": {
-        "lastModified": 1770587906,
-        "narHash": "sha256-N9ZTG3ia7l4iQO+9JlOj+sX4yu6gl7a3aozrlhSIJwQ=",
+        "lastModified": 1770914701,
+        "narHash": "sha256-QHFYyngohNhih4w+3IqQty5DV+p1txsx1kkk6XJWar8=",
         "owner": "danth",
         "repo": "stylix",
-        "rev": "72e6483a88d51471a6c55e1d43e7ed2bc47a76a4",
+        "rev": "db03fed72e5ca02be34e1d24789345a943329738",
         "type": "github"
       },
       "original": {
