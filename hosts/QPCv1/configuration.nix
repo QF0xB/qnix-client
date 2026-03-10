@@ -8,7 +8,7 @@
 
 {
   networking.hostName = "QPCv1";
-  networking.hostId = ""; # Generate with: head -c 8 /etc/machine-id
+  networking.hostId = "92f2ed5a";
 
   system.stateVersion = "24.11";
 
