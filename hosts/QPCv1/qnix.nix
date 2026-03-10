@@ -197,7 +197,7 @@
 
       virtualisation = {
         virt-manager = {
-          enable = true;
+          enable = false;
           gui = true;
           passthrough = false;
         };
@@ -247,6 +247,7 @@
         hyprsuite = {
           hyprland = {
             enable = true;
+            noHardwareCursors = true;
           };
         };
 
@@ -262,7 +263,7 @@
       };
 
       laptop-specifics = {
-        enable = true;
+        enable = false;
       };
 
       obsidian = {
