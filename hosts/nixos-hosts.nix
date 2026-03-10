@@ -6,16 +6,59 @@
   ...
 }@args:
 let
+  defaultCategories =
+    if specialArgs ? defaultCategories then
+      specialArgs.defaultCategories
+    else
+      [
+        "core"
+        "desktop"
+      ];
+
+  # Host-specific category selection allows reducing module eval scope per host.
+  categoryOverrides = {
+    QConfigVM = [
+      "core"
+      "desktop"
+    ];
+    QTestVM = [
+      "core"
+      "desktop"
+    ];
+    QFrame13 = [
+      "core"
+      "desktop"
+    ];
+    QPCv1 = [
+      "core"
+      "desktop"
+    ];
+    QPCv2 = [
+      "core"
+      "desktop"
+    ];
+  };
+
+  mkHostConfiguration =
+    host: hostArgs:
+    mkNixosConfiguration host (
+      hostArgs
+      // {
+        categories = categoryOverrides.${host} or defaultCategories;
+      }
+    );
+
   mkNixosConfiguration =
     host:
     {
       pkgs ? args.pkgs,
+      categories ? defaultCategories,
       user ? "q.braendli",
       isVm ? false,
       isInstall ? false,
       isLaptop ? false,
       isNixOS ? true,
-      loadOptions ? false,
+      loadOptions ? true,
       extraConfig ? { },
     }:
     lib.nixosSystem {
@@ -34,6 +77,7 @@ let
           user
           loadOptions
           ;
+        inherit categories;
         dots = "/persist/home/${user}/projects/qnix/client";
       };
 
@@ -77,6 +121,7 @@ let
                 user
                 loadOptions
                 ;
+              inherit categories;
               dots = "/persist/home/${user}/projects/qnix/client";
 
             };
@@ -87,8 +132,8 @@ let
                 # Load QNix Home Manager modules (will use categories from specialArgs)
                 ./${host}/home.nix
 
-                # Direct imports for modules that need it (if not handled by qnix-modules)
-                inputs.ags.homeManagerModules.default
+                inputs.noctalia.homeModules.default
+                inputs.qnix-modules.homeManagerModules.qnixNoctaliaIntegration
 
                 inputs.nvf.homeManagerModules.default
               ];
@@ -98,11 +143,15 @@ let
 
         # Other modules
         inputs.impermanence.nixosModules.impermanence
+        inputs.qnix-modules.nixosModules.qnixImpermanenceIntegration
+
         inputs.disko.nixosModules.disko
 
         inputs.stylix.nixosModules.stylix
 
         inputs.sops-nix.nixosModules.sops
+        inputs.qnix-modules.nixosModules.qnixSopsIntegration
+
         inputs.qnix-pkgs.nixosModules.default
 
         (lib.mkAliasOptionModule [ "hm" ] [ "home-manager" "users" user ])
@@ -115,12 +164,12 @@ let
 in
 {
   # Default host: QConfigVM (VM for testing configurations)
-  QConfigVM = mkNixosConfiguration "QConfigVM" { isVm = true; };
-  QTestVM = mkNixosConfiguration "QTestVM" { isVm = true; };
+  QConfigVM = mkHostConfiguration "QConfigVM" { isVm = true; };
+  QTestVM = mkHostConfiguration "QTestVM" { isVm = true; };
 
-  QFrame13 = mkNixosConfiguration "QFrame13" { isLaptop = true; };
-  QPCv1 = mkNixosConfiguration "QPCv1" { };
-  QPCv2 = mkNixosConfiguration "QPCv2" { };
+  QFrame13 = mkHostConfiguration "QFrame13" { isLaptop = true; };
+  QPCv1 = mkHostConfiguration "QPCv1" { };
+  QPCv2 = mkHostConfiguration "QPCv2" { };
 
   # Add more hosts as needed:
   # QPC = mkNixosConfiguration "QPC" { };

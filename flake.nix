@@ -65,9 +65,9 @@
       # Recommended: Use FlakeHub (with version tag)
       # url = "flakehub:your-org/qnix-modules/v2025.01.15.1";
       # Or use github directly: "github:your-org/qnix-modules"
-      url = "github:QF0xB/qnix-modules/dev";
+      # url = "github:QF0xB/qnix-modules/dev";
       # Or use a local path during development:
-      # url = "path:/home/q.braendli/projects/qnix/modules";
+      url = "path:/home/q.braendli/projects/qnix/modules";
     };
 
     qnix-ags = {
@@ -127,8 +127,8 @@
       nixosConfs = import ./hosts/nixos-hosts.nix {
         inherit inputs pkgs lib;
         specialArgs = {
-          # Pass categories for client (core + desktop)
-          categories = [
+          # Default category set; hosts can override in hosts/nixos-hosts.nix
+          defaultCategories = [
             "core"
             "desktop"
           ];
@@ -145,10 +145,5 @@
     in
     {
       nixosConfigurations = nixosConfs;
-
-      # Build VMs with bootloader support for testing boot configurations
-      # Usage: nix build .#vms.QConfigVM && ./result/bin/run-QConfigVM-vm
-      vms = lib.mapAttrs (name: config: config.config.system.build.vm) nixosConfs;
-      vmsb = lib.mapAttrs (name: config: config.config.system.build.vmWithBootLoader) nixosConfs;
     };
 }

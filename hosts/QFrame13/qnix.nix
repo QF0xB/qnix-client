@@ -73,6 +73,10 @@
 
         nm = {
           enable = true;
+          extraPlugins = [
+            "networkmanager-openvpn"
+          ];
+          gui = true;
         };
       };
 
@@ -187,6 +191,14 @@
             ];
             passwordFromSops = "up";
           };
+        };
+      };
+
+      virtualisation = {
+        virt-manager = {
+          enable = true;
+          gui = true;
+          passthrough = false;
         };
       };
 

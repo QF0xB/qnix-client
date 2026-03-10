@@ -83,6 +83,24 @@ nix build .#nixosConfigurations.MyHost.config.system.build.toplevel
 nix eval .#nixosConfigurations.MyHost.options
 ```
 
+### Evaluation Performance
+
+When profiling eval changes in `qnix-modules`, use an input override so the client flake picks up local module edits without touching `flake.lock`:
+
+```bash
+# Fast host-level eval timing
+time nix eval --no-write-lock-file \
+  --override-input qnix-modules path:/home/q.braendli/projects/qnix/modules \
+  --raw .#nixosConfigurations.QFrame13.config.system.name >/dev/null
+
+# Heavier VM eval timing (includes vm derivation path eval)
+time nix eval --no-write-lock-file \
+  --override-input qnix-modules path:/home/q.braendli/projects/qnix/modules \
+  --raw .#nixosConfigurations.QConfigVM.config.system.build.vm.drvPath >/dev/null
+```
+
+If eval is unexpectedly slow, generate and inspect `flamegraph.svg` and focus first on large `derivationStrict:*`, `home-manager-files`, and `modules.nix` stack regions.
+
 ## Host Factory Parameters
 
 The `mkNixosConfiguration` function accepts:
@@ -93,6 +111,8 @@ The `mkNixosConfiguration` function accepts:
 - `isInstall` (default: `false`): Whether this is an install ISO
 - `isLaptop` (default: `false`): Whether this is a laptop
 - `isNixOS` (default: `true`): Whether this is NixOS
+- `categories` (default: inherited from `specialArgs.defaultCategories`): Module categories to load for this host
+- `loadOptions` (default: `true`): Whether to import category option modules
 - `extraConfig` (default: `{}`): Additional NixOS modules
 
 ## Special Args
