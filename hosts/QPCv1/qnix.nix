@@ -149,6 +149,7 @@
 
       ssh-server = {
         enable = true;
+        sshAgent = false;
       };
 
       starship = {
