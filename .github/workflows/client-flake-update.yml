@@ -1,4 +1,7 @@
 # Runs every Sunday and opens a PR if client flake inputs have updates.
+# If you get "Resource not accessible by integration": either set the repo to
+# Settings → Actions → General → Workflow permissions → "Read and write permissions",
+# or add a secret GH_PAT (repo-scoped PAT) and uncomment the token line below.
 name: "Client flake update"
 on:
   schedule:
@@ -9,7 +12,8 @@ jobs:
   update:
     runs-on: "ubuntu-latest"
     permissions:
-      contents: "write"   # push branch + create PR
+      id-token: "write"
+      contents: "write"
       pull-requests: "write"
     steps:
       - uses: "actions/checkout@v4"
