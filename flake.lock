@@ -601,11 +601,11 @@
     },
     "qnix-modules": {
       "locked": {
-        "lastModified": 1773514339,
-        "narHash": "sha256-xTPzXosru5tIat+BOK3HczgN5dVNG6HiPheI7vgrcXU=",
+        "lastModified": 1773516687,
+        "narHash": "sha256-KpO7gdKwTiBcQHsIRRnYewFKaMRowVYfbxjZr0OPlpg=",
         "owner": "QF0xB",
         "repo": "qnix-modules",
-        "rev": "52390fa3786a432859c983535594ae79d0fdd043",
+        "rev": "68a64756dcfefb677181edbd264693adb8598523",
         "type": "github"
       },
       "original": {
