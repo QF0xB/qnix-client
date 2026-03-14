@@ -93,6 +93,13 @@
             enable = true;
           };
         };
+
+        keyring = {
+          gnome = {
+            enable = true;
+            gui = true;
+          };
+        };
       };
 
       plymouth = {

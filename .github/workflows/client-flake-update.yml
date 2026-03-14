@@ -1,0 +1,20 @@
+# Runs every Sunday and opens a PR if client flake inputs have updates.
+name: "Client flake update"
+on:
+  schedule:
+    - cron: "0 8 * * 0"  # 08:00 UTC every Sunday
+  workflow_dispatch: {}   # Allow manual run
+
+jobs:
+  update:
+    runs-on: "ubuntu-latest"
+    permissions:
+      contents: "write"   # push branch + create PR
+    steps:
+      - uses: "actions/checkout@v4"
+      - uses: "DeterminateSystems/determinate-nix-action@v3"
+      - uses: "DeterminateSystems/update-flake-lock@main"
+        with:
+          path-to-flake-dir: "client"
+          pr-title: "chore(client): flake lock update"
+          commit-msg: "client: flake.lock update"
