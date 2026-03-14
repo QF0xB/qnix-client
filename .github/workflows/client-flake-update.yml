@@ -10,11 +10,11 @@ jobs:
     runs-on: "ubuntu-latest"
     permissions:
       contents: "write"   # push branch + create PR
+      pull-requests: "write"
     steps:
       - uses: "actions/checkout@v4"
       - uses: "DeterminateSystems/determinate-nix-action@v3"
       - uses: "DeterminateSystems/update-flake-lock@main"
         with:
-          path-to-flake-dir: "."
           pr-title: "chore(flake): flake lock update"
           commit-msg: "flake: flake.lock update"
