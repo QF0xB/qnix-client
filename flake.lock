@@ -601,18 +601,14 @@
     },
     "qnix-modules": {
       "locked": {
-        "lastModified": 1773516687,
-        "narHash": "sha256-KpO7gdKwTiBcQHsIRRnYewFKaMRowVYfbxjZr0OPlpg=",
-        "owner": "QF0xB",
-        "repo": "qnix-modules",
-        "rev": "68a64756dcfefb677181edbd264693adb8598523",
-        "type": "github"
+        "lastModified": 1773518471,
+        "narHash": "sha256-SfE11OBGF5ZBkTq1rTtlpwSWj0QPczg08+yB18BY2PE=",
+        "path": "/home/q.braendli/projects/qnix/modules",
+        "type": "path"
       },
       "original": {
-        "owner": "QF0xB",
-        "ref": "dev",
-        "repo": "qnix-modules",
-        "type": "github"
+        "path": "/home/q.braendli/projects/qnix/modules",
+        "type": "path"
       }
     },
     "qnix-pkgs": {
