@@ -15,7 +15,7 @@ in
   disko.devices = {
     disk.main = {
       type = "disk";
-      device = "/dev/?????";
+      device = "/dev/nvm0n1";
       imageSize = "10G";
 
       content = {
