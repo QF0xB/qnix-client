@@ -15,7 +15,7 @@ in
   disko.devices = {
     disk.main = {
       type = "disk";
-      device = "/dev/?????";
+      device = "/dev/nvme0n1";
       imageSize = "10G";
 
       content = {
@@ -34,7 +34,7 @@ in
         }
         // lib.optionalAttrs (!isImageBuild) {
           swap = {
-            size = "4G";
+            size = "12G";
             type = "8200";
             content = {
               type = "swap";

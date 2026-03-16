@@ -23,7 +23,7 @@
       };
 
       fail2ban = {
-        enable = false;
+        enable = true;
       };
 
       git = {
@@ -33,6 +33,18 @@
         signingKey = "90360B7DB6B78B75E9013D113FF8C23C46F2CC90";
         userName = "Quirin Brändli";
         userEmail = "qbraendli@pm.me";
+      };
+
+      gpg = {
+        enable = true;
+        pinentryPackage = pkgs.pinentry-gnome3;
+        publicKeys = [
+          {
+            url = "https://keys.openpgp.org/vks/v1/by-fingerprint/90360B7DB6B78B75E9013D113FF8C23C46F2CC90";
+            sha256 = "sha256-q03XOg1DYUMjF/8r3vJ8OHTcNPJdsNnXNf/ODWiL3vg=";
+            trust = "ultimate";
+          }
+        ];
       };
 
       impermanence = {
@@ -62,13 +74,25 @@
         nm = {
           enable = true;
           extraPlugins = [
-            "nm-openvpn"
+            "networkmanager-openvpn"
           ];
+          gui = true;
         };
       };
 
       nvf = {
         enable = true;
+      };
+
+      passwords = {
+        bitwarden = {
+          cli = {
+            enable = false;
+          };
+          desktop = {
+            enable = true;
+          };
+        };
       };
 
       plymouth = {
@@ -124,7 +148,8 @@
       };
 
       ssh-server = {
-        enable = false;
+        enable = true;
+        sshAgent = false;
       };
 
       starship = {
@@ -133,6 +158,10 @@
 
       stylix = {
         enable = true;
+
+        wallpapers = {
+          enable = true;
+        };
       };
 
       user = {
@@ -142,6 +171,7 @@
           "audio"
           "video"
           "users"
+          "plugdev"
         ];
 
         root = {
@@ -162,6 +192,14 @@
             ];
             passwordFromSops = "up";
           };
+        };
+      };
+
+      virtualisation = {
+        virt-manager = {
+          enable = true;
+          gui = true;
+          passthrough = false;
         };
       };
 
@@ -207,7 +245,9 @@
         };
 
         hyprsuite = {
-          enable = true;
+          hyprland = {
+            enable = true;
+          };
         };
 
         noctalia = {
@@ -215,18 +255,47 @@
         };
       };
 
+      jetbrains = {
+        enable = true;
+
+        idea.enable = true;
+      };
+
+      laptop-specifics = {
+        enable = true;
+      };
+
+      obsidian = {
+        enable = true;
+      };
+
+      periphery = {
+        thunderbolt = {
+          enable = true;
+        };
+      };
+
+      sound = {
+        enable = true;
+      };
+
       terminal = {
+        enable = true;
+      };
+
+      tidal-hifi = {
         enable = true;
       };
 
       vscode = {
         enable = true;
 
-        package = pkgs.cursor;
+        package = pkgs.code-cursor;
+        agentPanelSize = 100;
       };
 
-      waypaper = {
-        enable = false;
+      xdg-folders = {
+        enable = true;
       };
     };
   };
