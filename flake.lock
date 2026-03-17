@@ -609,8 +609,10 @@
         "type": "github"
       },
       "original": {
-        "path": "/home/q.braendli/projects/qnix/modules",
-        "type": "path"
+        "owner": "QF0xB",
+        "ref": "dev",
+        "repo": "qnix-modules",
+        "type": "github"
       }
     },
     "qnix-pkgs": {

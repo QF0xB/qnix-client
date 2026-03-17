@@ -196,7 +196,7 @@
 
       virtualisation = {
         virt-manager = {
-          enable = true;
+          enable = false;
           gui = true;
           passthrough = false;
         };

@@ -5,7 +5,7 @@
 name: "Client flake update"
 on:
   schedule:
-    - cron: "0 8 * * 0"  # 08:00 UTC every Sunday
+    - cron: "0 8 * * *"  # 08:00 UTC every Sunday
   workflow_dispatch: {}   # Allow manual run
 
 jobs:
