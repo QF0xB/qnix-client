@@ -22,6 +22,10 @@
         timeout = 3;
       };
 
+      docker = {
+        enable = true;
+      };
+
       fail2ban = {
         enable = true;
       };
@@ -90,7 +94,7 @@
             enable = false;
           };
           desktop = {
-            enable = true;
+            enable = false; # Waiting for this "https://nixpk.gs/pr-tracker.html?pr=500223"
           };
         };
       };
@@ -197,7 +201,7 @@
 
       virtualisation = {
         virt-manager = {
-          enable = true;
+          enable = false;
           gui = true;
           passthrough = false;
         };
@@ -247,6 +251,7 @@
         hyprsuite = {
           hyprland = {
             enable = true;
+            noHardwareCursors = true;
           };
         };
 
@@ -266,6 +271,10 @@
       };
 
       obsidian = {
+        enable = true;
+      };
+
+      openrgb = {
         enable = true;
       };
 

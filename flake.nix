@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-unstable"; # nixos-unstable";
+      url = "github:NixOS/nixpkgs/nixos-unstable"; # :NixOS-unstablenixos-unstable"; # nixos-unstable";
     };
 
     # nixpkgs-stable = {
@@ -65,9 +65,9 @@
       # Recommended: Use FlakeHub (with version tag)
       # url = "flakehub:your-org/qnix-modules/v2025.01.15.1";
       # Or use github directly: "github:your-org/qnix-modules"
-      url = "github:QF0xB/qnix-modules/dev";
+      # url = "github:QF0xB/qnix-modules/dev";
       # Or use a local path during development:
-      # url = "path:/home/q.braendli/projects/qnix/modules";
+      url = "path:/home/q.braendli/projects/qnix/modules";
     };
 
     qnix-ags = {
