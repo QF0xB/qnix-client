@@ -257,6 +257,7 @@
       jetbrains = {
         enable = true;
 
+        clion.enable = true;
         idea.enable = true;
       };
 
