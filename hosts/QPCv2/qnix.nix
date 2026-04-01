@@ -207,6 +207,33 @@
         };
       };
 
+      vpn = {
+        enable = true;
+
+        openvpn = {
+          enable = true;
+
+          servers = {
+            work = {
+              updateResolvConf = true;
+              # Provide the OpenVPN config file via qnix.core.vpn.openvpn.servers.<name>.files,
+              # so it ends up at /etc/openvpn/work/config.ovpn.
+              configFile = "config.ovpn";
+              # Credentials file for OpenVPN's `auth-user-pass` directive.
+              # Format: first line username, second line password.
+              authUserPassFile = "/home/${user}/Documents/openvpn-work.auth";
+              files = {
+                "config.ovpn" = {
+                  mode = "0444";
+                  # Absolute path on the target machine, copied during activation.
+                  source = "/persist/home/${user}/projects/qnix/client/vpn/work.ovpn";
+                };
+              };
+            };
+          };
+        };
+      };
+
       yubikey = {
         enable = true;
         autolock = false;
