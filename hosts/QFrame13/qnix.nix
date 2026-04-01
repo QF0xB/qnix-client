@@ -66,6 +66,10 @@
         enable = true;
       };
 
+      microcontroller = {
+        enable = true;
+      };
+
       network = {
         firewall = {
           enable = false;
