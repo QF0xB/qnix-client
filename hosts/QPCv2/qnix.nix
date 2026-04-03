@@ -287,6 +287,10 @@
         };
       };
 
+      codex = {
+        enable = true;
+      };
+
       jetbrains = {
         enable = true;
 
