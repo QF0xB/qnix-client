@@ -14,7 +14,10 @@ let
       specialArgs.defaultNixosProfiles
     else
       [
+        "creator"
         "hyprland"
+        "personal"
+        "stylix"
         "impermanence"
       ];
 
@@ -23,30 +26,46 @@ let
       specialArgs.defaultHomeProfiles
     else
       [
+        "creator"
         "hyprland"
+        "personal"
+        "stylix"
       ];
 
   hosts = {
     QConfigVM = {
       user = defaultUser;
       nixosProfiles = [
+        "creator"
         "hyprland"
+        "personal"
+        "stylix"
         "impermanence"
       ];
       homeProfiles = [
+        "creator"
         "hyprland"
+        "laptop"
+        "personal"
+        "stylix"
       ];
     };
 
     QTestVM = {
       user = defaultUser;
       nixosProfiles = [
+        "creator"
         "hyprland"
+        "personal"
+        "stylix"
         "impermanence"
         "dev"
       ];
       homeProfiles = [
+        "creator"
         "hyprland"
+        "personal"
+        "stylix"
         "dev"
       ];
     };
@@ -54,31 +73,49 @@ let
     QFrame13 = {
       user = defaultUser;
       nixosProfiles = [
+        "creator"
         "hyprland"
+        "personal"
+        "stylix"
         "laptop"
       ];
       homeProfiles = [
+        "creator"
         "hyprland"
+        "personal"
+        "stylix"
       ];
     };
 
     QPCv1 = {
       user = defaultUser;
       nixosProfiles = [
+        "creator"
         "hyprland"
+        "personal"
+        "stylix"
       ];
       homeProfiles = [
+        "creator"
         "hyprland"
+        "personal"
+        "stylix"
       ];
     };
 
     QPCv2 = {
       user = defaultUser;
       nixosProfiles = [
+        "creator"
         "hyprland"
+        "personal"
+        "stylix"
       ];
       homeProfiles = [
+        "creator"
         "hyprland"
+        "personal"
+        "stylix"
       ];
     };
   };
@@ -107,6 +144,7 @@ let
       specialArgs = extraArgs;
 
       modules = [
+        inputs.stylix.nixosModules.stylix
         "${hostPath}/configuration.nix"
         "${hostPath}/qnix.nix"
         "${hostPath}/hardware.nix"
@@ -129,6 +167,9 @@ let
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
+            sharedModules = [
+              inputs.noctalia-shell.homeModules.default
+            ];
             extraSpecialArgs = extraArgs // {
               qnixHomeStandalone = false;
             };

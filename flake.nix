@@ -9,6 +9,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    stylix = {
+      url = "github:danth/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    noctalia-shell = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     impermanence.url = "github:nix-community/impermanence";
 
     sops-nix = {
@@ -66,11 +76,17 @@
           defaultUser = "q.braendli";
 
           defaultNixosProfiles = [
+            "creator"
             "hyprland"
+            "personal"
+            "stylix"
           ];
 
           defaultHomeProfiles = [
+            "creator"
             "hyprland"
+            "personal"
+            "stylix"
           ];
         };
       };

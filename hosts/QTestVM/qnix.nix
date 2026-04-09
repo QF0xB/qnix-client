@@ -1,13 +1,16 @@
 { user, lib, ... }:
 {
   qnix = {
+    status = {
+      vm = true;
+    };
     system = {
       shell = {
-        showIcons = false;
+        showIcons = true;
       };
 
       starship = {
-        enable = false;
+        enable = true;
       };
 
       users = {

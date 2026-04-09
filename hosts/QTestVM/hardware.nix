@@ -13,8 +13,8 @@ let
 
   variantConfig = {
     virtualisation = {
-      memorySize = 8192; # 8GB RAM
-      cores = 4;
+      memorySize = 12288; # 12GB RAM
+      cores = 8;
 
       # Forward SSH port
       forwardPorts = [
