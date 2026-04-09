@@ -56,7 +56,7 @@
         port = 22;
         allowRootLogin = false;
         allowPasswordAuthentication = false;
-        sshAgent = true;
+        sshAgent = false;
       };
     };
 
