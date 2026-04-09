@@ -66,13 +66,11 @@
           defaultUser = "q.braendli";
 
           defaultNixosProfiles = [
-            "base"
-            "workstation"
+            "hyprland"
           ];
 
           defaultHomeProfiles = [
-            "base"
-            "workstation"
+            "hyprland"
           ];
         };
       };

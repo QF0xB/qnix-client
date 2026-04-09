@@ -14,8 +14,7 @@ let
       specialArgs.defaultNixosProfiles
     else
       [
-        "base"
-        "workstation"
+        "hyprland"
         "impermanence"
       ];
 
@@ -24,71 +23,62 @@ let
       specialArgs.defaultHomeProfiles
     else
       [
-        "base"
-        "workstation"
+        "hyprland"
       ];
 
   hosts = {
     QConfigVM = {
       user = defaultUser;
       nixosProfiles = [
-        "base"
-        "workstation"
+        "hyprland"
         "impermanence"
       ];
       homeProfiles = [
-        "base"
-        "workstation"
+        "hyprland"
       ];
     };
 
     QTestVM = {
       user = defaultUser;
       nixosProfiles = [
-        "base"
-        "workstation"
+        "hyprland"
         "impermanence"
+        "dev"
       ];
       homeProfiles = [
-        "base"
-        "workstation"
+        "hyprland"
+        "dev"
       ];
     };
 
     QFrame13 = {
       user = defaultUser;
       nixosProfiles = [
-        "base"
-        "workstation"
+        "hyprland"
         "laptop"
       ];
       homeProfiles = [
-        "base"
-        "workstation"
+        "hyprland"
       ];
     };
 
     QPCv1 = {
       user = defaultUser;
       nixosProfiles = [
-        "base"
-        "workstation"
+        "hyprland"
       ];
       homeProfiles = [
-        "base"
-        "workstation"
+        "hyprland"
       ];
     };
 
     QPCv2 = {
       user = defaultUser;
       nixosProfiles = [
-        "base"
-        "workstation"
+        "hyprland"
       ];
       homeProfiles = [
-        "base"
-        "workstation"
+        "hyprland"
       ];
     };
   };
@@ -109,7 +99,6 @@ let
           nixosProfiles
           homeProfiles
           ;
-        dots = "/persist/home/${user}/projects/qnix/client";
       };
     in
     lib.nixosSystem {
@@ -133,12 +122,16 @@ let
 
         inputs.home-manager.nixosModules.home-manager
         {
+          qnix.system.shell.projectRoot = "/persist/home/${user}/projects/qnix/client";
+
           nix.settings.trusted-users = [ user ];
 
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            extraSpecialArgs = extraArgs;
+            extraSpecialArgs = extraArgs // {
+              qnixHomeStandalone = false;
+            };
 
             users.${user} = {
               imports = [

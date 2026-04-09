@@ -2,6 +2,14 @@
 {
   qnix = {
     system = {
+      shell = {
+        showIcons = false;
+      };
+
+      starship = {
+        enable = false;
+      };
+
       users = {
         enable = true;
         defaultExtraGroups = [

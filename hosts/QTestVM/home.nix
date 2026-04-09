@@ -3,6 +3,5 @@
 {
   home.username = "q.braendli";
   home.homeDirectory = lib.mkForce "/home/q.braendli";
-  home.stateVersion = "24.11";
+  home.stateVersion = "25.11";
 }
-

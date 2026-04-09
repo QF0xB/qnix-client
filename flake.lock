@@ -129,8 +129,8 @@
     },
     "qnix-modules": {
       "locked": {
-        "lastModified": 1775517472,
-        "narHash": "sha256-yZygYxoatSr0BlVJvQRonklDnPPGQC8Ur0I0zisFPyE=",
+        "lastModified": 1775698323,
+        "narHash": "sha256-xbWn5PZDv7NlU3Ty12sjXmd1x/YQBkxKRF3NFpIBlT8=",
         "path": "/home/q.braendli/projects/qnix/modules",
         "type": "path"
       },
