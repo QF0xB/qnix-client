@@ -53,36 +53,33 @@
     ];
   };
 
-  outputs =
-    { nixpkgs, ... }@inputs:
-    let
-      system = "x86_64-linux";
+  outputs = {nixpkgs, ...} @ inputs: let
+    system = "x86_64-linux";
 
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
-
-      qnixLib = inputs.qnix-modules.lib {
-        lib = nixpkgs.lib;
-        pkgs = pkgs;
-      };
-
-      lib = nixpkgs.lib.extend (_final: _prev: qnixLib);
-
-      nixosConfs = import ./hosts/nixos-hosts.nix {
-        inherit
-          inputs
-          pkgs
-          lib
-          qnixLib
-          ;
-        specialArgs = {
-          defaultUser = "q.braendli";
-        };
-      };
-    in
-    {
-      nixosConfigurations = nixosConfs;
+    pkgs = import nixpkgs {
+      inherit system;
+      config.allowUnfree = true;
     };
+
+    qnixLib = inputs.qnix-modules.lib {
+      lib = nixpkgs.lib;
+      pkgs = pkgs;
+    };
+
+    lib = nixpkgs.lib.extend (_final: _prev: qnixLib);
+
+    nixosConfs = import ./hosts/nixos-hosts.nix {
+      inherit
+        inputs
+        pkgs
+        lib
+        qnixLib
+        ;
+      specialArgs = {
+        defaultUser = "q.braendli";
+      };
+    };
+  in {
+    nixosConfigurations = nixosConfs;
+  };
 }
