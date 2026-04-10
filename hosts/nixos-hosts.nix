@@ -30,10 +30,6 @@ let
     builtins.filter (profile: !(builtins.elem profile disabledProfiles)) mergedProfiles;
 
   hosts = {
-    QConfigVM = {
-      user = defaultUser;
-    };
-
     QTestVM = {
       user = defaultUser;
       extra.profiles = [
