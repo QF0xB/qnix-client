@@ -9,114 +9,54 @@
 let
   defaultUser = if specialArgs ? defaultUser then specialArgs.defaultUser else "q.braendli";
 
-  defaultNixosProfiles =
-    if specialArgs ? defaultNixosProfiles then
-      specialArgs.defaultNixosProfiles
-    else
-      [
-        "creator"
-        "hyprland"
-        "personal"
-        "stylix"
-        "impermanence"
-      ];
+  defaultProfiles = [
+    "creator"
+    "dev"
+    "hyprland"
+    "nvf"
+    "personal"
+    "stylix"
+    "impermanence"
+  ];
 
-  defaultHomeProfiles =
-    if specialArgs ? defaultHomeProfiles then
-      specialArgs.defaultHomeProfiles
-    else
-      [
-        "creator"
-        "hyprland"
-        "personal"
-        "stylix"
-      ];
+  applyProfileOverrides =
+    defaultProfiles': hostDef:
+    let
+      baseProfiles = hostDef.profiles or defaultProfiles';
+      extraProfiles = (hostDef.extra or { }).profiles or [ ];
+      disabledProfiles = (hostDef.disable or { }).profiles or [ ];
+      mergedProfiles = lib.unique (baseProfiles ++ extraProfiles);
+    in
+    builtins.filter (profile: !(builtins.elem profile disabledProfiles)) mergedProfiles;
 
   hosts = {
     QConfigVM = {
       user = defaultUser;
-      nixosProfiles = [
-        "creator"
-        "hyprland"
-        "personal"
-        "stylix"
-        "impermanence"
-      ];
-      homeProfiles = [
-        "creator"
-        "hyprland"
-        "laptop"
-        "personal"
-        "stylix"
-      ];
     };
 
     QTestVM = {
       user = defaultUser;
-      nixosProfiles = [
-        "creator"
-        "hyprland"
-        "personal"
-        "stylix"
-        "impermanence"
-        "dev"
-      ];
-      homeProfiles = [
-        "creator"
-        "hyprland"
-        "personal"
-        "stylix"
-        "dev"
+      extra.profiles = [
+        "laptop"
       ];
     };
 
     QFrame13 = {
       user = defaultUser;
-      nixosProfiles = [
-        "creator"
-        "hyprland"
-        "personal"
-        "stylix"
+      extra.profiles = [
         "laptop"
-      ];
-      homeProfiles = [
-        "creator"
-        "hyprland"
-        "personal"
-        "stylix"
+        "impermanence"
       ];
     };
 
     QPCv1 = {
       user = defaultUser;
-      nixosProfiles = [
-        "creator"
-        "hyprland"
-        "personal"
-        "stylix"
-      ];
-      homeProfiles = [
-        "creator"
-        "hyprland"
-        "personal"
-        "stylix"
-      ];
+      extra.profiles = [ "impermanence" ];
     };
 
     QPCv2 = {
       user = defaultUser;
-      nixosProfiles = [
-        "creator"
-        "hyprland"
-        "personal"
-        "stylix"
-      ];
-      homeProfiles = [
-        "creator"
-        "hyprland"
-        "personal"
-        "stylix"
-      ];
+      extra.profiles = [ "impermanence" ];
     };
   };
 
@@ -124,8 +64,7 @@ let
     hostName: hostDef:
     let
       user = hostDef.user or defaultUser;
-      nixosProfiles = hostDef.nixosProfiles or defaultNixosProfiles;
-      homeProfiles = hostDef.homeProfiles or defaultHomeProfiles;
+      profiles = applyProfileOverrides defaultProfiles hostDef;
       hostPath = ./. + "/${hostName}";
       extraArgs = {
         inherit
@@ -133,8 +72,7 @@ let
           qnixLib
           hostName
           user
-          nixosProfiles
-          homeProfiles
+          profiles
           ;
       };
     in
@@ -155,7 +93,7 @@ let
 
         (import "${inputs.qnix-modules}/loader/nixos.nix" {
           inherit lib;
-          profiles = nixosProfiles;
+          inherit profiles;
         })
 
         inputs.home-manager.nixosModules.home-manager
@@ -168,6 +106,7 @@ let
             useGlobalPkgs = true;
             useUserPackages = true;
             sharedModules = [
+              inputs.nvf.homeManagerModules.default
               inputs.noctalia-shell.homeModules.default
             ];
             extraSpecialArgs = extraArgs // {
@@ -178,7 +117,7 @@ let
               imports = [
                 (import "${inputs.qnix-modules}/loader/home.nix" {
                   lib = inputs.nixpkgs.lib;
-                  profiles = homeProfiles;
+                  inherit profiles;
                 })
                 "${hostPath}/home.nix"
               ];

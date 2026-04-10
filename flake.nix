@@ -19,6 +19,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     impermanence.url = "github:nix-community/impermanence";
 
     sops-nix = {
@@ -30,7 +35,7 @@
 
     qnix-modules = {
       # url = "github:QF0xB/qnix-modules/rewrite";
-      url = "path:/home/q.braendli/projects/qnix/modules";
+      url = "path:/persist/home/q.braendli/projects/qnix/modules";
     };
 
     disko = {
@@ -74,20 +79,6 @@
           ;
         specialArgs = {
           defaultUser = "q.braendli";
-
-          defaultNixosProfiles = [
-            "creator"
-            "hyprland"
-            "personal"
-            "stylix"
-          ];
-
-          defaultHomeProfiles = [
-            "creator"
-            "hyprland"
-            "personal"
-            "stylix"
-          ];
         };
       };
     in
