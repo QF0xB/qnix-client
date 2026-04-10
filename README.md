@@ -73,6 +73,26 @@ qnix-modules = {
 };
 ```
 
+If your shell profile includes the QNix helper tools, you can switch sources with:
+
+```bash
+qnix-dev-modules
+qnix-use-release v0.1.0
+qnix-sync-modules
+```
+
+To cut a release from the `modules` repo and switch the client to that tag:
+
+```bash
+qnix-release patch
+```
+
+`qnix-release` expects clean `modules` and `client` git trees. It bumps `modules/VERSION`,
+creates and pushes a `vX.Y.Z` tag, then rewrites the client input and refreshes
+`client/flake.lock`. By default it uses `github:QF0xB/qnix-modules?ref=<tag>` as the
+release source. Set `QNIX_MODULES_RELEASE_PREFIX` if you want to point the client
+at a FlakeHub source instead.
+
 ### Building
 
 ```bash
@@ -130,4 +150,3 @@ The following are available in all modules via `specialArgs`:
 
 - [qnix-modules](../qnix-modules/) - Module definitions
 - [example-host](hosts/example-host/) - Example host configuration
-

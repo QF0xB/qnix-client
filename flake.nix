@@ -34,8 +34,8 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     qnix-modules = {
-      url = "github:QF0xB/qnix-modules/rewrite";
-      # url = "path:/persist/home/q.braendli/projects/qnix/modules";
+      # Managed by qnix-dev-modules and qnix-use-release.
+      url = "github:QF0xB/qnix-modules?ref=v0.1.0";
     };
 
     disko = {
