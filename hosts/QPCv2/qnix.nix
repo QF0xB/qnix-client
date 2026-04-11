@@ -70,6 +70,24 @@
             group = "root";
             restartUnits = [ "nix-daemon.service" ];
           };
+          github_token = {
+            key = "github_token";
+            mode = "0400";
+            owner = "${user}";
+            group = "${user}";
+          };
+          borgbackup-eu-passphrase = {
+            key = "borgbackup-eu-passphrase";
+            mode = "0400";
+            owner = "root";
+            group = "root";
+          };
+          borgbackup-us-passphrase = {
+            key = "borgbackup-us-passphrase";
+            mode = "0400";
+            owner = "root";
+            group = "root";
+          };
         };
       };
 
@@ -87,6 +105,28 @@
     network = {
       networkmanager.extraPlugins = [ "networkmanager-openvpn" ];
       tailscale.enable = true;
+    };
+
+    storage.backup = {
+      enable = true;
+
+      targets.borg = {
+        eu = {
+          enable = true;
+          repo = "ssh://t9zp3694@t9zp3694.repo.borgbase.com/./repo";
+          sshKeyPath = "/persist/home/${user}/.ssh/qpcv2-backup";
+          sshKnownHostsFile = "/persist/home/${user}/.ssh/known_hosts";
+          encryption.sopsSecretName = "borgbackup-eu-passphrase";
+        };
+
+        us = {
+          enable = true;
+          repo = "ssh://e7yq45o0@e7yq45o0.repo.borgbase.com/./repo";
+          sshKeyPath = "/persist/home/${user}/.ssh/qpcv2-backup";
+          sshKnownHostsFile = "/persist/home/${user}/.ssh/known_hosts";
+          encryption.sopsSecretName = "borgbackup-us-passphrase";
+        };
+      };
     };
   };
 }
