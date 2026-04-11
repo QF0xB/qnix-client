@@ -63,15 +63,81 @@ This repository uses `categories = ["core", "desktop"]`, which means:
 
 ## Development
 
-### Using Local qnix-modules
+These helpers are installed when your NixOS config sets `qnix.system.shell.projectRoot`
+to this client repo (and `qnixAliases` is enabled). They rewrite `flake.nix` only inside
+the `qnix-modules` block marked with `# Managed by qnix-dev-modules and qnix-use-release.`
 
-During development, you can use a local path for `qnix-modules`:
+### Release helpers — command reference
+
+| Command | Purpose |
+|--------|---------|
+| `qnix-release` | In the **modules** repo: bump or set version, commit `VERSION`, tag `vX.Y.Z`, push, then point the **client** flake at that release. |
+| `qnix-use-release` | Point the **client** flake at an **existing** `qnix-modules` version (no tag, no push). |
+| `qnix-dev-modules` | Point the **client** at a **local** checkout: `path:$QNIX_ROOT/modules`. Runs `nix flake update qnix-modules`. |
+| `qnix-sync-modules` | Re-run `nix flake update qnix-modules` for whatever `qnix-modules` URL is already in `flake.nix`. |
+
+**Shared flags** (`qnix-release` and `qnix-use-release` only):
+
+- `--source flakehub` or `--source github` (also `--source=…`).  
+  Default: **`flakehub`**, or override with env `QNIX_MODULES_RELEASE_SOURCE=flakehub|github`.
+
+**URL shapes** (defaults; override with env if needed):
+
+- `flakehub` → `https://flakehub.com/f/QF0xB/qnix-modules/=X.Y.Z`  
+  (`QNIX_MODULES_FLAKEHUB_PREFIX` replaces the base URL without the `/=version` suffix.)
+- `github` → `github:QF0xB/qnix-modules?ref=vX.Y.Z`  
+  (`QNIX_MODULES_GITHUB_PREFIX` replaces `github:QF0xB/qnix-modules`.)
+
+---
+
+`qnix-use-release` **requires one argument**: a version `X.Y.Z` or `vX.Y.Z`.
+
+```bash
+qnix-use-release 0.1.0
+qnix-use-release --source github 0.1.0
+```
+
+---
+
+`qnix-release` **optional first argument** (default **`patch`** if omitted):
+
+| Argument | Meaning |
+|----------|---------|
+| `major` | Bump major from `modules/VERSION` (`modules` repo must be clean). |
+| `minor` | Bump minor. |
+| `patch` | Bump patch (default). |
+| `X.Y.Z` or `vX.Y.Z` | Use that exact version instead of bumping (tag must not already exist). |
+
+Examples:
+
+```bash
+qnix-release                    # same as qnix-release patch
+qnix-release patch
+qnix-release minor
+qnix-release 1.2.3              # release exactly v1.2.3
+qnix-release --source github patch
+```
+
+Behavior after rewriting the client:
+
+- **`--source github`**: runs `nix flake update qnix-modules` immediately (the git tag exists on GitHub).
+- **Default (`flakehub`)**: does **not** lock yet — FlakeHub gets the version after CI. When publish is green, run `nix flake update qnix-modules` in this repo and commit `flake.lock`.
+
+`qnix-release` requires a **clean** git working tree in the **modules** repository.
+
+---
+
+### Using local `qnix-modules` (manual)
+
+You can also set the input by hand:
 
 ```nix
 qnix-modules = {
   url = "path:../qnix-modules";
 };
 ```
+
+Or use `qnix-dev-modules` to switch the managed block to the local path (see table above).
 
 ### Building
 
@@ -130,4 +196,3 @@ The following are available in all modules via `specialArgs`:
 
 - [qnix-modules](../qnix-modules/) - Module definitions
 - [example-host](hosts/example-host/) - Example host configuration
-

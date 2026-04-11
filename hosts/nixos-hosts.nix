@@ -2,181 +2,128 @@
   inputs,
   pkgs,
   lib,
-  specialArgs,
+  qnixLib,
+  specialArgs ? { },
   ...
-}@args:
+}:
 let
-  defaultCategories =
-    if specialArgs ? defaultCategories then
-      specialArgs.defaultCategories
-    else
-      [
-        "core"
-        "desktop"
-      ];
+  defaultUser = if specialArgs ? defaultUser then specialArgs.defaultUser else "q.braendli";
 
-  # Host-specific category selection allows reducing module eval scope per host.
-  categoryOverrides = {
-    QConfigVM = [
-      "core"
-      "desktop"
-    ];
-    QTestVM = [
-      "core"
-      "desktop"
-    ];
-    QFrame13 = [
-      "core"
-      "desktop"
-    ];
-    QPCv1 = [
-      "core"
-      "desktop"
-    ];
-    QPCv2 = [
-      "core"
-      "desktop"
-    ];
+  defaultProfiles = [
+    "creator"
+    "dev"
+    "hyprland"
+    "nvf"
+    "personal"
+    "stylix"
+    "impermanence"
+  ];
+
+  applyProfileOverrides =
+    defaultProfiles': hostDef:
+    let
+      baseProfiles = hostDef.profiles or defaultProfiles';
+      extraProfiles = (hostDef.extra or { }).profiles or [ ];
+      disabledProfiles = (hostDef.disable or { }).profiles or [ ];
+      mergedProfiles = lib.unique (baseProfiles ++ extraProfiles);
+    in
+    builtins.filter (profile: !(builtins.elem profile disabledProfiles)) mergedProfiles;
+
+  hosts = {
+    QTestVM = {
+      user = defaultUser;
+      extra.profiles = [
+        "laptop"
+      ];
+    };
+
+    QFrame13 = {
+      user = defaultUser;
+      extra.profiles = [
+        "laptop"
+        "impermanence"
+      ];
+    };
+
+    QPCv1 = {
+      user = defaultUser;
+      extra.profiles = [ "impermanence" ];
+    };
+
+    QPCv2 = {
+      user = defaultUser;
+      extra.profiles = [ "impermanence" ];
+    };
   };
 
-  mkHostConfiguration =
-    host: hostArgs:
-    mkNixosConfiguration host (
-      hostArgs
-      // {
-        categories = categoryOverrides.${host} or defaultCategories;
-      }
-    );
-
-  mkNixosConfiguration =
-    host:
-    {
-      pkgs ? args.pkgs,
-      categories ? defaultCategories,
-      user ? "q.braendli",
-      isVm ? false,
-      isInstall ? false,
-      isLaptop ? false,
-      isNixOS ? true,
-      loadOptions ? true,
-      extraConfig ? { },
-    }:
-    lib.nixosSystem {
-      inherit pkgs;
-
-      specialArgs = specialArgs // {
-        # Full inputs needed for imports (inputs.qnix-modules, etc.)
-        inherit inputs;
-        # categories and filtered inputs are already in specialArgs from flake.nix
+  mkHost =
+    hostName: hostDef:
+    let
+      user = hostDef.user or defaultUser;
+      profiles = applyProfileOverrides defaultProfiles hostDef;
+      hostPath = ./. + "/${hostName}";
+      extraArgs = {
         inherit
-          host
-          isVm
-          isInstall
-          isLaptop
-          isNixOS
+          inputs
+          qnixLib
+          hostName
           user
-          loadOptions
+          profiles
           ;
-        inherit categories;
-        dots = "/persist/home/${user}/projects/qnix/client";
       };
+    in
+    lib.nixosSystem {
+      inherit pkgs lib;
+
+      specialArgs = extraArgs;
 
       modules = [
-        # Host-specific configuration
-        # ./${host}/qnix.nix
+        inputs.stylix.nixosModules.stylix
+        "${hostPath}/configuration.nix"
+        "${hostPath}/qnix.nix"
+        "${hostPath}/hardware.nix"
 
-        ./${host}/configuration.nix
-        ./${host}/qnix.nix # qnix.* options for this host
-        ./${host}/hardware.nix
+        inputs.impermanence.nixosModules.impermanence
+        inputs.sops-nix.nixosModules.sops
+        inputs.disko.nixosModules.disko
 
-        # Load QNix modules (will use categories from specialArgs)
-        inputs.qnix-modules.nixosModules.qnix
+        (import "${inputs.qnix-modules}/loader/nixos.nix" {
+          inherit lib;
+          inherit profiles;
+        })
 
-        {
-          qnix.persist.home.files = [
-            ".local/share/nix/trusted-settings.json"
-          ];
-        }
-
-        # Home Manager
         inputs.home-manager.nixosModules.home-manager
-
         {
+          qnix.system.shell.projectRoot = "/persist/home/${user}/projects/qnix/client";
+
           nix.settings.trusted-users = [ user ];
 
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-
-            extraSpecialArgs = specialArgs // {
-              # Full inputs needed for imports
-              inherit inputs;
-              # categories and filtered inputs are already in specialArgs from flake.nix
-              inherit
-                host
-                isVm
-                isInstall
-                isLaptop
-                isNixOS
-                user
-                loadOptions
-                ;
-              inherit categories;
-              dots = "/persist/home/${user}/projects/qnix/client";
-
+            sharedModules = [
+              inputs.nvf.homeManagerModules.default
+              inputs.noctalia-shell.homeModules.default
+            ];
+            extraSpecialArgs = extraArgs // {
+              qnixHomeStandalone = false;
             };
 
             users.${user} = {
               imports = [
-                inputs.qnix-modules.homeManagerModules.qnix
-                # Load QNix Home Manager modules (will use categories from specialArgs)
-                ./${host}/home.nix
-
-                inputs.noctalia.homeModules.default
-                inputs.qnix-modules.homeManagerModules.qnixNoctaliaIntegration
-
-                inputs.nvf.homeManagerModules.default
+                (import "${inputs.qnix-modules}/loader/home.nix" {
+                  lib = inputs.nixpkgs.lib;
+                  inherit profiles;
+                })
+                "${hostPath}/home.nix"
               ];
             };
           };
         }
 
-        # Other modules
-        inputs.impermanence.nixosModules.impermanence
-        inputs.qnix-modules.nixosModules.qnixImpermanenceIntegration
-
-        inputs.disko.nixosModules.disko
-
-        inputs.stylix.nixosModules.stylix
-
-        inputs.sops-nix.nixosModules.sops
-        inputs.qnix-modules.nixosModules.qnixSopsIntegration
-
-        inputs.qnix-pkgs.nixosModules.default
-
         (lib.mkAliasOptionModule [ "hm" ] [ "home-manager" "users" user ])
-
-        extraConfig
       ]
-      # Import host-specific disko configuration if it exists
-      ++ lib.optional (builtins.pathExists ./${host}/disko.nix) ./${host}/disko.nix;
+      ++ lib.optional (builtins.pathExists "${hostPath}/disko.nix") "${hostPath}/disko.nix";
     };
 in
-{
-  # Default host: QConfigVM (VM for testing configurations)
-  QConfigVM = mkHostConfiguration "QConfigVM" { isVm = true; };
-  QTestVM = mkHostConfiguration "QTestVM" { isVm = true; };
-
-  QFrame13 = mkHostConfiguration "QFrame13" { isLaptop = true; };
-  QPCv1 = mkHostConfiguration "QPCv1" { };
-  QPCv2 = mkHostConfiguration "QPCv2" { };
-
-  # Add more hosts as needed:
-  # QPC = mkNixosConfiguration "QPC" { };
-  # QPC-install = mkNixosConfiguration "QPC" { isInstall = true; };
-  # QFrame13 = mkNixosConfiguration "QFrame13" { isLaptop = true; };
-  # QFrame13-install = mkNixosConfiguration "QFrame13" {
-  #   isInstall = true;
-  #   isLaptop = true;
-  # };
-}
+lib.mapAttrs mkHost hosts
