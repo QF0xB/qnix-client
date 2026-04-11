@@ -35,7 +35,7 @@
 
     qnix-modules = {
       # Managed by qnix-dev-modules and qnix-use-release.
-      url = "github:QF0xB/qnix-modules?ref=v0.1.0";
+      url = "https://flakehub.com/f/QF0xB/qnix-modules/=0.2.0";
     };
 
     disko = {
