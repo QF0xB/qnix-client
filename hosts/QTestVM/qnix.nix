@@ -1,6 +1,8 @@
 { user, lib, ... }:
 {
   qnix = {
+    desktop.clientPrNotify.enable = false;
+
     status = {
       vm = true;
     };
