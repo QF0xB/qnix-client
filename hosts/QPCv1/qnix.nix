@@ -65,6 +65,12 @@
             group = "root";
             restartUnits = [ "nix-daemon.service" ];
           };
+          github_token = {
+            key = "github_token";
+            mode = "0400";
+            owner = "${user}";
+            group = "${user}";
+          };
         };
       };
 

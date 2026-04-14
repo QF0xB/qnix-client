@@ -7,6 +7,8 @@ result-*
 *.qcow2
 *.qcow2.*
 
+.codex
+
 # EFI variables
 *.fd
 
