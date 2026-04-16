@@ -92,7 +92,7 @@
         networkManager.connections.qf0xb = {
           interfaceName = "wg0";
           autoconnect = true;
-          addresses = [ "10.100.10.3/32" ];
+          addresses = [ "10.100.10.5/32" ];
           dns = [ "10.10.10.254" ];
           privateKeySecretName = "qframe13-wg-qf0xb-private";
           listenPort = 51820;

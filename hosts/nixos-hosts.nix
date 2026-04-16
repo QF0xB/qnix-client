@@ -10,13 +10,11 @@ let
   defaultUser = if specialArgs ? defaultUser then specialArgs.defaultUser else "q.braendli";
 
   defaultProfiles = [
-    "creator"
     "dev"
     "hyprland"
     "nvf"
     "personal"
     "stylix"
-    "impermanence"
   ];
 
   applyProfileOverrides =
