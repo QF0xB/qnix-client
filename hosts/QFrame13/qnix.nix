@@ -87,26 +87,6 @@
 
     network = {
       networkmanager.extraPlugins = [ "networkmanager-openvpn" ];
-      wireguard = {
-        openFirewall = true;
-        networkManager.connections.qf0xb = {
-          interfaceName = "wg0";
-          autoconnect = true;
-          addresses = [ "10.100.10.5/32" ];
-          dns = [ "10.10.10.254" ];
-          privateKeySecretName = "qframe13-wg-qf0xb-private";
-          listenPort = 51820;
-          mtu = 1320;
-          peers = [
-            {
-              publicKey = "qE8kYQ6pd35CFjaaf8BbKyFdkJIhlX5N0x7WmOqivkU=";
-              presharedKeySecretName = "qframe13-wg-qf0xb-psk";
-              endpoint = "vpn.qf0xb.de:51820";
-              allowedIPs = [ "10.10.10.0/24" ];
-            }
-          ];
-        };
-      };
     };
   };
 }
