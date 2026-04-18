@@ -12,6 +12,8 @@
       };
     };
     system = {
+      bluetooth.enable = true;
+
       boot-manager = {
         encrypted = true;
         loader = "systemd-boot";
@@ -104,7 +106,6 @@
 
     network = {
       networkmanager.extraPlugins = [ "networkmanager-openvpn" ];
-      tailscale.enable = true;
     };
 
     storage.backup = {

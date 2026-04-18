@@ -4,9 +4,7 @@
   user,
   config,
   ...
-}:
-
-{
+}: {
   networking.hostName = "QPCv2";
   networking.hostId = "5fcc083f"; # Generate with: head -c 8 /etc/machine-id
 
