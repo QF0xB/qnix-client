@@ -6,6 +6,11 @@
 }:
 {
   qnix = {
+    desktop = {
+      hyprland = {
+        noHardwareCursors = true;
+      };
+    };
     system = {
       boot-manager = {
         encrypted = true;
