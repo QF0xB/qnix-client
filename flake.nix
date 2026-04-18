@@ -35,7 +35,12 @@
 
     qnix-modules = {
       # Managed by qnix-dev-modules and qnix-use-release.
-      url = "https://flakehub.com/f/QF0xB/qnix-modules/=0.5.0";
+      url = "https://flakehub.com/f/QF0xB/qnix-modules/=0.7.0";
+    };
+
+    qnix-pkgs = {
+      url = "github:QF0xB/qnix-pkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     disko = {
@@ -59,6 +64,9 @@
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
+      overlays = [
+        inputs.qnix-pkgs.overlays.default
+      ];
     };
 
     qnixLib = inputs.qnix-modules.lib {

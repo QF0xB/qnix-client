@@ -236,6 +236,27 @@
         "type": "github"
       }
     },
+    "home-manager_3": {
+      "inputs": {
+        "nixpkgs": [
+          "qnix-pkgs",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1740624780,
+        "narHash": "sha256-8TP61AI3QBQsjzVUQFIV8NoB5nbYfJB3iHczhBikDkU=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "b8869e4ead721bbd4f0d6b927e8395705d4f16e6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
     "impermanence": {
       "inputs": {
         "home-manager": "home-manager_2",
@@ -435,16 +456,37 @@
     },
     "qnix-modules": {
       "locked": {
-        "lastModified": 1776530493,
-        "narHash": "sha256-PX8xjYxIY03d8Odn84bzFhJRnxailJlLJ564G/UY9oQ=",
-        "rev": "faf94ca33c427bac79ab3cbbe5a157dcd61cc329",
-        "revCount": 272,
+        "lastModified": 1776552879,
+        "narHash": "sha256-6G0yQv/syxBlDDRiV1Prx10sp0L3Ovzd9lv87/a+W/M=",
+        "rev": "a3a3669a45996cba930b1e03d63f3eaf471b6217",
+        "revCount": 278,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/QF0xB/qnix-modules/0.5.0/019da178-fe5f-7043-8756-fabc01862ffe/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/QF0xB/qnix-modules/0.7.0/019da2ce-2d24-77a2-9f14-f99ba7303d94/source.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://flakehub.com/f/QF0xB/qnix-modules/%3D0.5.0"
+        "url": "https://flakehub.com/f/QF0xB/qnix-modules/%3D0.7.0"
+      }
+    },
+    "qnix-pkgs": {
+      "inputs": {
+        "home-manager": "home-manager_3",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1770601180,
+        "narHash": "sha256-a3Vcc4DWBltnk4R6U52BZiVOqRytIRI2lLVC1rbRdik=",
+        "owner": "QF0xB",
+        "repo": "qnix-pkgs",
+        "rev": "168afb5a428516c7e7fc59a931438e85967e8cbc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "QF0xB",
+        "repo": "qnix-pkgs",
+        "type": "github"
       }
     },
     "root": {
@@ -457,6 +499,7 @@
         "noctalia-shell": "noctalia-shell",
         "nvf": "nvf",
         "qnix-modules": "qnix-modules",
+        "qnix-pkgs": "qnix-pkgs",
         "sops-nix": "sops-nix",
         "stylix": "stylix"
       }
