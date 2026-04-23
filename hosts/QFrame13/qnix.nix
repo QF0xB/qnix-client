@@ -6,6 +6,11 @@
 }:
 {
   qnix = {
+    dev = {
+      jetbrains = {
+        clion.enable = true;
+      };
+    };
     system = {
       boot-manager = {
         encrypted = true;
