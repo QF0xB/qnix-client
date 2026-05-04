@@ -3,12 +3,14 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+{
   qnix = {
     dev = {
       jetbrains = {
         clion.enable = true;
       };
+      wireshark.enable = false;
     };
     system = {
       boot-manager = {
@@ -31,7 +33,7 @@
           group = user;
           home = "/home/${user}";
           description = "Quirin Brändli";
-          extraGroups = ["wheel"];
+          extraGroups = [ "wheel" ];
           passwordFromSops = "up";
         };
       };
@@ -68,7 +70,7 @@
             mode = "0400";
             owner = "root";
             group = "root";
-            restartUnits = ["nix-daemon.service"];
+            restartUnits = [ "nix-daemon.service" ];
           };
           github_token = {
             key = "github_token";
@@ -91,7 +93,7 @@
     };
 
     network = {
-      networkmanager.extraPlugins = ["networkmanager-openvpn"];
+      networkmanager.extraPlugins = [ "networkmanager-openvpn" ];
 
       wireguard = {
         enable = true;
@@ -100,8 +102,11 @@
         tunnels.qf0xb = {
           interfaceName = "wg0";
           autoconnect = true;
-          addresses = ["10.100.10.4/32"];
-          dns = ["10.10.10.1" "10.10.10.254"];
+          addresses = [ "10.100.10.4/32" ];
+          dns = [
+            "10.10.10.1"
+            "10.10.10.254"
+          ];
           privateKey.sopsSecret = "qframe13-wg-qf0xb-private";
           listenPort = 51820;
           mtu = 1320;
@@ -110,7 +115,10 @@
             publicKey = "qE8kYQ6pd35CFjaaf8BbKyFdkJIhlX5N0x7WmOqivkU=";
             presharedKey.sopsSecret = "qframe13-wg-qf0xb-psk";
             endpoint = "vpn.qf0xb.de:51820";
-            allowedIPs = ["10.10.10.0/24" "10.10.20.0/24"];
+            allowedIPs = [
+              "10.10.10.0/24"
+              "10.10.20.0/24"
+            ];
           };
         };
       };

@@ -6,6 +6,9 @@
 }:
 {
   qnix = {
+    dev = {
+      wireshark.enable = false;
+    };
     desktop = {
       hyprland = {
         noHardwareCursors = true;
@@ -115,7 +118,7 @@
           interfaceName = "wg0";
           autoconnect = true;
           addresses = [ "10.100.10.3/32" ];
-          dns = [ "10.10.10.254" ];
+          dns = [ "10.10.10.1" ];
           privateKey.sopsSecret = "qpcv2-wg-qf0xb-private";
           listenPort = 51820;
           mtu = 1320;
@@ -124,7 +127,10 @@
             publicKey = "qE8kYQ6pd35CFjaaf8BbKyFdkJIhlX5N0x7WmOqivkU=";
             presharedKey.sopsSecret = "qpcv2-wg-qf0xb-psk";
             endpoint = "vpn.qf0xb.de:51820";
-            allowedIPs = [ "10.10.10.0/24" ];
+            allowedIPs = [
+              "10.10.10.0/24"
+              "10.10.20.0/24"
+            ];
           };
         };
       };
