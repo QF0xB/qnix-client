@@ -15,7 +15,7 @@
     };
 
     noctalia-shell = {
-      url = "github:noctalia-dev/noctalia-shell";
+      url = "github:noctalia-dev/noctalia-shell/legacy-v4";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -35,7 +35,7 @@
 
     qnix-modules = {
       # Managed by qnix-dev-modules and qnix-use-release.
-      url = "path:/persist/home/q.braendli/projects/qnix/modules";
+      url = "https://flakehub.com/f/QF0xB/qnix-modules/=0.11.3";
     };
 
     qnix-pkgs = {
