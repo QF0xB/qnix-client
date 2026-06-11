@@ -6,6 +6,8 @@
 }:
 {
   qnix = {
+    runtime.docker.enable = true;
+
     dev = {
       jetbrains = {
         clion.enable = true;
@@ -25,7 +27,6 @@
           "video"
           "users"
           "plugdev"
-          "docker"
         ];
 
         users.${user} = {

@@ -35,7 +35,7 @@
 
     qnix-modules = {
       # Managed by qnix-dev-modules and qnix-use-release.
-      url = "https://flakehub.com/f/QF0xB/qnix-modules/=0.11.3";
+      url = "https://flakehub.com/f/QF0xB/qnix-modules/=0.13.0";
     };
 
     qnix-pkgs = {

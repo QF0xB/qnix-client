@@ -6,6 +6,8 @@
 }:
 {
   qnix = {
+    runtime.docker.enable = true;
+
     dev = {
       wireshark.enable = false;
     };
