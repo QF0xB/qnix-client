@@ -1,5 +1,5 @@
 {
-  description = "QNix Client Configuration";
+  description = "QNix client configurations";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -26,68 +26,61 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
-
-    qnix-modules = {
-      # Managed by qnix-dev-modules and qnix-use-release.
-      url = "https://flakehub.com/f/QF0xB/qnix-modules/=0.13.0";
-    };
-
-    qnix-pkgs = {
-      url = "github:QF0xB/qnix-pkgs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
 
-  nixConfig = {
-    extra-substituters = [
-      "https://cache.garnix.io"
-    ];
-    extra-trusted-public-keys = [
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-    ];
-  };
-
-  outputs = {nixpkgs, ...} @ inputs: let
-    system = "x86_64-linux";
-
-    pkgs = import nixpkgs {
-      inherit system;
-      config.allowUnfree = true;
-      overlays = [
-        inputs.qnix-pkgs.overlays.default
-      ];
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    qnixLib = inputs.qnix-modules.lib {
-      lib = nixpkgs.lib;
-      pkgs = pkgs;
+    qnix-sdk.url = "path:/persist/home/q.braendli/projects/qnix/sdk";
+
+    qnix-modules = {
+      url = "path:/persist/home/q.braendli/projects/qnix/modules";
+      inputs.qnix-sdk.follows = "qnix-sdk";
     };
+  };
 
-    lib = nixpkgs.lib.extend (_final: _prev: qnixLib);
-
-    nixosConfs = import ./hosts/nixos-hosts.nix {
-      inherit
-        inputs
-        pkgs
-        lib
-        qnixLib
-        ;
-      specialArgs = {
-        defaultUser = "q.braendli";
+  outputs =
+    inputs@{
+      nixpkgs,
+      home-manager,
+      stylix,
+      noctalia-shell,
+      nvf,
+      impermanence,
+      disko,
+      llm-agents,
+      qnix-modules,
+      ...
+    }:
+    let
+      system = "x86_64-linux";
+      qnix = qnix-modules.lib.mkQNix {
+        context = {
+          hostname = "QTestVM";
+          vm = true;
+        };
+      };
+    in
+    {
+      nixosConfigurations = import ./hosts/nixos-hosts.nix {
+        inherit
+          disko
+          home-manager
+          impermanence
+          inputs
+          llm-agents
+          noctalia-shell
+          nixpkgs
+          nvf
+          qnix
+          system
+          stylix
+          ;
       };
     };
-  in {
-    nixosConfigurations = nixosConfs;
-  };
 }

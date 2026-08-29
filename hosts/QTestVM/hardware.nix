@@ -1,73 +1,24 @@
+{ modulesPath, ... }:
 {
-  lib,
-  pkgs,
-  config,
-  modulesPath,
-  ...
-}:
-
-let
-  # Path to persist.qcow2 - adjust if the file is in a different location
-  # This uses an absolute path that should work regardless of where the VM is run from
-  persistImagePath = "/home/lcqbraendli/projects/qnix/qnix-client/persist.qcow2";
-
-  variantConfig = {
-    virtualisation = {
-      memorySize = 12288; # 12GB RAM
-      cores = 8;
-
-      # Forward SSH port
-      forwardPorts = [
-        {
-          from = "host";
-          host.port = 2222;
-          guest.port = 22;
-        }
-      ];
-
-      # Use VGA graphics (same as bootloader for consistency)
-      graphics = true;
-      qemu = {
-        options = [
-          "-vga"
-          "std" # Standard VGA (matches bootloader)
-          "-display"
-          "gtk,zoom-to-fit=on" # GTK display backend with zoom-to-fit for proper scalingvnc
-        ];
-      };
-
-      useDefaultFilesystems = true;
-    };
-  };
-in
-{
-
-  imports = [
-    (modulesPath + "/profiles/qemu-guest.nix")
-  ];
+  imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
   boot.initrd.availableKernelModules = [
     "ahci"
     "xhci_pci"
     "virtio_pci"
-    "sr_mod"
     "virtio_blk"
   ];
-  boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
 
-  # QEMU guest services for better VM integration
   services.qemuGuest.enable = true;
+  services.spice-vdagentd.enable = true;
 
-  # Use VGA console (same as bootloader) for consistent rendering
-  boot.kernelParams = [
-    "console=tty0" # VGA console (matches bootloader)
-    "rd.systemd.show_status=1"
-    "systemd.log_level=debug"
-  ];
-
-  # VM filesystem configuration for bootloader testing
-  virtualisation.vmVariant = variantConfig;
-  virtualisation.vmVariantWithBootLoader = variantConfig;
+  virtualisation.vmVariant = {
+    virtualisation = {
+      memorySize = 12288;
+      cores = 8;
+      graphics = true;
+      useDefaultFilesystems = true;
+    };
+  };
 }
