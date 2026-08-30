@@ -15,8 +15,8 @@
 
   virtualisation.vmVariant = {
     virtualisation = {
-      memorySize = 12288;
-      cores = 8;
+      memorySize = 16384;
+      cores = 12;
       graphics = true;
       useDefaultFilesystems = true;
     };
