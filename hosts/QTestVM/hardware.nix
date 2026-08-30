@@ -1,4 +1,4 @@
-{ modulesPath, ... }:
+{ modulesPath, pkgs, ... }:
 {
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
@@ -7,8 +7,11 @@
     "xhci_pci"
     "virtio_pci"
     "virtio_blk"
+    "virtio_gpu"
   ];
   boot.kernelModules = [ "kvm-intel" ];
+
+  hardware.graphics.enable = true;
 
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
@@ -19,6 +22,16 @@
       cores = 12;
       graphics = true;
       useDefaultFilesystems = true;
+
+      qemu = {
+        package = pkgs.qemu_full;
+        forceAccel = true;
+        options = [
+          "-vga none"
+          "-device virtio-vga-gl"
+          "-display gtk,gl=on"
+        ];
+      };
     };
   };
 }
