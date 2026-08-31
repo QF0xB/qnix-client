@@ -36,6 +36,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
+
     qnix-sdk.url = "path:/persist/home/q.braendli/projects/qnix/sdk";
 
     qnix-modules = {
@@ -54,6 +56,7 @@
       impermanence,
       disko,
       llm-agents,
+      mcp-servers-nix,
       qnix-modules,
       ...
     }:
@@ -63,6 +66,7 @@
         context = {
           hostname = "QTestVM";
           vm = true;
+          inherit mcp-servers-nix;
         };
       };
     in
