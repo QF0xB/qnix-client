@@ -1,4 +1,6 @@
 {
+  qnix.desktop.hyprland.noHardwareCursors = true;
+
   qnix.system.users.users."q.braendli" = {
     home = "/home/q.braendli";
     description = "Quirin Brändli";

@@ -29,7 +29,7 @@
         options = [
           "-vga none"
           "-device virtio-vga-gl"
-          "-display gtk,gl=on"
+          "-display gtk,gl=on,show-cursor=off"
         ];
       };
     };
