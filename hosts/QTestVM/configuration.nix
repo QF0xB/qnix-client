@@ -10,6 +10,19 @@
     hostId = "01234567";
   };
 
+  # QEMU's user-mode network does not reliably advertise a usable DNS server
+  # to systemd-resolved. Keep this VM self-contained without affecting hosts.
+  services.resolved.settings.Resolve = {
+    DNS = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
+    FallbackDNS = [
+      "8.8.8.8"
+      "8.8.4.4"
+    ];
+  };
+
   boot.zfs = {
     devNodes = "/dev/disk/by-id";
     forceImportRoot = true;
