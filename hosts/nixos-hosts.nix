@@ -16,11 +16,30 @@ let
     QTestVM = {
       user = "q.braendli";
       nixosProfiles = [
+        "developer"
         "hyprland"
         "impermanence"
         "appearance"
       ];
       homeProfiles = [
+        "developer"
+        "shell"
+        "hyprland"
+        "appearance"
+      ];
+    };
+
+    QFrame13 = {
+      user = "q.braendli";
+      nixosProfiles = [
+        "developer"
+        "hyprland"
+        "impermanence"
+        "appearance"
+        "laptop"
+      ];
+      homeProfiles = [
+        "developer"
         "shell"
         "hyprland"
         "appearance"
