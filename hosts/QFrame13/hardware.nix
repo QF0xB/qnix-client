@@ -2,10 +2,14 @@
   config,
   lib,
   modulesPath,
+  nixos-hardware,
   ...
 }:
 {
-  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    nixos-hardware.nixosModules.framework-12th-gen-intel
+  ];
 
   boot.initrd.availableKernelModules = [
     "xhci_pci"

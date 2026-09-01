@@ -6,6 +6,7 @@
   llm-agents,
   noctalia-shell,
   nixpkgs,
+  nixos-hardware,
   nvf,
   qnix,
   system,
@@ -51,7 +52,7 @@ let
     hostName: host:
     nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit inputs qnix; };
+      specialArgs = { inherit inputs qnix nixos-hardware; };
       modules = [
         {
           nixpkgs = {
