@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
   # Client-wide defaults. A host can replace any of these in its own qnix.nix.
   nix.settings = {
@@ -23,4 +23,6 @@
       ];
     };
   };
+
+  qnix.security.gpg.pinentryPackage = pkgs.pinentry-gnome3;
 }
