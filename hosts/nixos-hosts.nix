@@ -56,6 +56,7 @@ let
         "developer"
         "hyprland"
         "impermanence"
+        "nvidia"
         "appearance"
         "secrets"
       ];
