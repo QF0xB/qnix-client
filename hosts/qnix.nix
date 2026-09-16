@@ -18,6 +18,12 @@
     "users"
   ];
 
+  qnix.desktop.client-pr-notify = {
+    owner = "QF0xB";
+    repo = "qnix-client";
+    matchAuthors = [ "qbraendli" ];
+  };
+
   qnix.security.yubikey = {
     autoLock = false;
     login = true;
