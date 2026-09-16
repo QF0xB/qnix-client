@@ -1,7 +1,9 @@
 {
   inputs,
+  config,
   ...
-}: {
+}:
+{
   qnix = {
     system = {
       boot = {
@@ -26,7 +28,7 @@
           home = "/home/q.braendli";
           description = "Quirin Brändli";
           passwordFromSops = "up";
-          extraGroups = ["wheel"];
+          extraGroups = [ "wheel" ];
         };
       };
     };
@@ -41,8 +43,16 @@
           group = "root";
           neededForUsers = true;
         };
+        secrets.github-token = {
+          key = "github_token";
+          owner = "q.braendli";
+          group = "users";
+          mode = "0400";
+        };
       };
 
     };
+
+    dev.git.githubTokenPath = config.sops.secrets.github-token.path;
   };
 }
