@@ -4,11 +4,13 @@
   impermanence,
   inputs,
   llm-agents,
+  mcp-servers-nix,
   noctalia-shell,
   nixpkgs,
   nixos-hardware,
   nvf,
-  qnix,
+  sops-nix,
+  qnix-modules,
   system,
   stylix,
 }:
@@ -16,6 +18,7 @@ let
   hosts = {
     QTestVM = {
       user = "q.braendli";
+      vm = true;
       nixosProfiles = [
         "developer"
         "hyprland"
@@ -46,13 +49,48 @@ let
         "appearance"
       ];
     };
+
+    QPCv1 = {
+      user = "q.braendli";
+      nixosProfiles = [
+        "developer"
+        "hyprland"
+        "impermanence"
+        "appearance"
+        "secrets"
+      ];
+      homeProfiles = [
+        "developer"
+        "shell"
+        "hyprland"
+        "appearance"
+      ];
+    };
   };
 
   mkHost =
     hostName: host:
+    let
+      hostQnix = qnix-modules.lib.mkQNix {
+        context = {
+          hostname = hostName;
+          inherit mcp-servers-nix;
+        }
+        // builtins.mapAttrs (_: value: value) (
+          builtins.removeAttrs host [
+            "user"
+            "nixosProfiles"
+            "homeProfiles"
+          ]
+        );
+      };
+    in
     nixpkgs.lib.nixosSystem {
       inherit system;
-      specialArgs = { inherit inputs qnix nixos-hardware; };
+      specialArgs = {
+        inherit inputs nixos-hardware;
+        qnix = hostQnix;
+      };
       modules = [
         {
           nixpkgs = {
@@ -62,6 +100,7 @@ let
         }
         disko.nixosModules.disko
         impermanence.nixosModules.impermanence
+        sops-nix.nixosModules.sops
         stylix.nixosModules.stylix
         home-manager.nixosModules.home-manager
         ./${hostName}/configuration.nix
@@ -78,16 +117,19 @@ let
               nvf.homeManagerModules.default
               noctalia-shell.homeModules.default
             ];
-            extraSpecialArgs = { inherit inputs qnix; };
+            extraSpecialArgs = {
+              inherit inputs;
+              qnix = hostQnix;
+            };
             users.${host.user} = {
-              imports = qnix.modulesFor.integratedHome host.homeProfiles ++ [
+              imports = hostQnix.modulesFor.integratedHome host.homeProfiles ++ [
                 ./${hostName}/home.nix
               ];
             };
           };
         }
       ]
-      ++ qnix.modulesFor.nixos host.nixosProfiles;
+      ++ hostQnix.modulesFor.nixos host.nixosProfiles;
     };
 in
 nixpkgs.lib.mapAttrs mkHost hosts

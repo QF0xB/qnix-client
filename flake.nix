@@ -1,13 +1,6 @@
 {
   description = "QNix client configurations";
 
-  nixConfig = {
-    extra-substituters = [ "https://cache.numtide.com" ];
-    extra-trusted-public-keys = [
-      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
-    ];
-  };
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -35,6 +28,11 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -47,10 +45,11 @@
 
     mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
 
-    qnix-sdk.url = "path:/persist/home/q.braendli/projects/qnix/sdk";
+    qnix-sdk.url = "path:/persist/home/q.braendli/Projects/qnix/sdk";
 
     qnix-modules = {
-      url = "path:/persist/home/q.braendli/projects/qnix/modules";
+      # Managed by qnix-dev-modules and qnix-use-release.
+      url = "path:/persist/home/q.braendli/Projects/qnix/modules";
       inputs.qnix-sdk.follows = "qnix-sdk";
     };
   };
@@ -64,6 +63,7 @@
       noctalia-shell,
       nvf,
       impermanence,
+      sops-nix,
       disko,
       llm-agents,
       mcp-servers-nix,
@@ -72,13 +72,6 @@
     }:
     let
       system = "x86_64-linux";
-      qnix = qnix-modules.lib.mkQNix {
-        context = {
-          hostname = "QTestVM";
-          vm = true;
-          inherit mcp-servers-nix;
-        };
-      };
     in
     {
       nixosConfigurations = import ./hosts/nixos-hosts.nix {
@@ -86,13 +79,15 @@
           disko
           home-manager
           impermanence
+          sops-nix
           inputs
           llm-agents
           noctalia-shell
           nixpkgs
           nixos-hardware
           nvf
-          qnix
+          qnix-modules
+          mcp-servers-nix
           system
           stylix
           ;

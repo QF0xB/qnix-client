@@ -13,4 +13,14 @@
     "video"
     "users"
   ];
+
+  qnix.security.yubikey = {
+    autoLock = false;
+    login = true;
+    u2f.mappings = {
+      "q.braendli" = [
+        ":WL1eNX3H4cqCpOdlFLskeKHVkf+SUVng34Ch6rxwn5gw+bJrTyH7wBaYE/iY0Rl4Ab0mNJrTtoUqjLaRNvhWbA==,DX5g1dye2T+mX8tNyMg05W3NrbDE527OCWv6BcUgb63H0zEu4BEl9zWlf3tVOINlqyHcS988QVzfzfHKXT5Abw==,es256,+presence"
+      ];
+    };
+  };
 }
