@@ -25,4 +25,9 @@
   };
 
   qnix.security.gpg.pinentryPackage = pkgs.pinentry-gnome3;
+
+  qnix.dev.git = {
+    userName = "Quirin Brändli";
+    userEmail = "qbraendli@pm.me";
+  };
 }
