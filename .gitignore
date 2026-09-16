@@ -14,3 +14,6 @@ result-*
 
 # Nix build artifacts
 *.drv
+
+# Old configuration
+old
