@@ -20,8 +20,8 @@
 
   qnix.desktop.client-pr-notify = {
     owner = "QF0xB";
-    repo = "qnix-client";
-    matchAuthors = [ "qbraendli" ];
+    repo = "qnix-modules";
+    matchAuthors = [ "QF0xB" ];
   };
 
   qnix.security.yubikey = {
