@@ -1,0 +1,25 @@
+# Runs every Sunday and opens a PR if client flake inputs have updates.
+# If you get "Resource not accessible by integration": either set the repo to
+# Settings -> Actions -> General -> Workflow permissions -> "Read and write permissions",
+# or add a secret GH_PAT (repo-scoped PAT) and uncomment the token line below.
+name: "Client flake update"
+
+on:
+  schedule:
+    - cron: "0 8 */2 * *"
+  workflow_dispatch: { }
+
+jobs:
+  update:
+    runs-on: "ubuntu-latest"
+    permissions:
+      id-token: "write"
+      contents: "write"
+      pull-requests: "write"
+    steps:
+      - uses: "actions/checkout@v4"
+      - uses: "DeterminateSystems/determinate-nix-action@v3"
+      - uses: "DeterminateSystems/update-flake-lock@main"
+        with:
+          pr-title: "chore(flake): flake lock update"
+          commit-msg: "flake: flake.lock update"

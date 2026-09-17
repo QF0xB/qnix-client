@@ -1,4 +1,8 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  pkgs,
+  ...
+}:
 {
   # Client-wide defaults. A host can replace any of these in its own qnix.nix.
   nix.settings = {
@@ -20,8 +24,8 @@
 
   qnix.desktop.client-pr-notify = {
     owner = "QF0xB";
-    repo = "qnix-modules";
-    matchAuthors = [ "QF0xB" ];
+    repo = "qnix-client";
+    titleContains = "chore(flake): flake lock update";
   };
 
   qnix.security.yubikey = {
