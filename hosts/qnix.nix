@@ -23,6 +23,7 @@
   ];
 
   qnix.desktop.client-pr-notify = {
+    enable = true;
     owner = "QF0xB";
     repo = "qnix-client";
     titleContains = "chore(flake): flake lock update";
