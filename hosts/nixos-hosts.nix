@@ -13,8 +13,7 @@
   qnix-modules,
   system,
   stylix,
-}:
-let
+}: let
   hosts = {
     QTestVM = {
       user = "q.braendli";
@@ -59,21 +58,22 @@ let
         "nvidia"
         "appearance"
         "secrets"
+        "pentesting"
       ];
       homeProfiles = [
         "developer"
         "shell"
         "hyprland"
         "appearance"
+        "pentesting"
       ];
     };
   };
 
-  mkHost =
-    hostName: host:
-    let
-      hostQnix = qnix-modules.lib.mkQNix {
-        context = {
+  mkHost = hostName: host: let
+    hostQnix = qnix-modules.lib.mkQNix {
+      context =
+        {
           hostname = hostName;
           inherit mcp-servers-nix;
         }
@@ -84,53 +84,56 @@ let
             "homeProfiles"
           ]
         );
-      };
-    in
+    };
+  in
     nixpkgs.lib.nixosSystem {
       inherit system;
       specialArgs = {
         inherit inputs nixos-hardware;
         qnix = hostQnix;
       };
-      modules = [
-        {
-          nixpkgs = {
-            config.allowUnfree = true;
-            overlays = [ llm-agents.overlays.shared-nixpkgs ];
-          };
-        }
-        disko.nixosModules.disko
-        impermanence.nixosModules.impermanence
-        sops-nix.nixosModules.sops
-        stylix.nixosModules.stylix
-        home-manager.nixosModules.home-manager
-        ./${hostName}/configuration.nix
-        ./${hostName}/disko.nix
-        ./${hostName}/hardware.nix
-        ./qnix.nix
-        ./${hostName}/qnix.nix
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            backupFileExtension = "backup";
-            sharedModules = [
-              nvf.homeManagerModules.default
-              noctalia-shell.homeModules.default
-            ];
-            extraSpecialArgs = {
-              inherit inputs;
-              qnix = hostQnix;
+      modules =
+        [
+          {
+            nixpkgs = {
+              config.allowUnfree = true;
+              overlays = [llm-agents.overlays.shared-nixpkgs];
             };
-            users.${host.user} = {
-              imports = hostQnix.modulesFor.integratedHome host.homeProfiles ++ [
-                ./${hostName}/home.nix
+          }
+          disko.nixosModules.disko
+          impermanence.nixosModules.impermanence
+          sops-nix.nixosModules.sops
+          stylix.nixosModules.stylix
+          home-manager.nixosModules.home-manager
+          ./${hostName}/configuration.nix
+          ./${hostName}/disko.nix
+          ./${hostName}/hardware.nix
+          ./qnix.nix
+          ./${hostName}/qnix.nix
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              backupFileExtension = "backup";
+              sharedModules = [
+                nvf.homeManagerModules.default
+                noctalia-shell.homeModules.default
               ];
+              extraSpecialArgs = {
+                inherit inputs;
+                qnix = hostQnix;
+              };
+              users.${host.user} = {
+                imports =
+                  hostQnix.modulesFor.integratedHome host.homeProfiles
+                  ++ [
+                    ./${hostName}/home.nix
+                  ];
+              };
             };
-          };
-        }
-      ]
-      ++ hostQnix.modulesFor.nixos host.nixosProfiles;
+          }
+        ]
+        ++ hostQnix.modulesFor.nixos host.nixosProfiles;
     };
 in
-nixpkgs.lib.mapAttrs mkHost hosts
+  nixpkgs.lib.mapAttrs mkHost hosts
