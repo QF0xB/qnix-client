@@ -5,6 +5,14 @@
 }:
 {
   qnix = {
+    dev = {
+      jetbrains = {
+        ideaPro = true;
+        rider = true;
+        webstorm = true;
+        clion = true;
+      };
+    };
     system = {
       boot = {
         encrypted = true;
