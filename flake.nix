@@ -49,7 +49,7 @@
 
     qnix-modules = {
       # Managed by qnix-dev-modules and qnix-use-release.
-      url = "path:/persist/home/q.braendli/Projects/qnix/modules";
+      url = "https://flakehub.com/f/QF0xB/qnix-modules/0.14.0";
       inputs.qnix-sdk.follows = "qnix-sdk";
     };
   };
