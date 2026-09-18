@@ -1,23 +1,28 @@
 {
-  user,
-  pkgs,
   inputs,
+  config,
   ...
-}: {
+}:
+{
   qnix = {
-    desktop = {
-      hyprland = {
-        noHardwareCursors = true;
+    dev = {
+      jetbrains = {
+        ideaPro = true;
+        rider = true;
+        webstorm = true;
+        clion = true;
       };
     };
-    dev = {
-      jetbrains.rider.enable = true;
-    };
     system = {
-      boot-manager = {
+      boot = {
         encrypted = true;
         loader = "systemd-boot";
         timeout = 3;
+      };
+
+      localisation.xkb = {
+        layout = "de,de,us";
+        variant = "koy,,";
       };
 
       users = {
@@ -27,94 +32,103 @@
           "users"
           "plugdev"
         ];
-
-        users.${user} = {
-          kind = "normal";
-          group = user;
-          home = "/home/${user}";
+        users."q.braendli" = {
+          home = "/home/q.braendli";
           description = "Quirin Brändli";
-          extraGroups = ["wheel"];
           passwordFromSops = "up";
-        };
-      };
-
-      localisation = {
-        xkb = {
-          layout = "de,de,us";
-          variant = "koy, ,";
-          console-bridge = true;
+          extraGroups = [ "wheel" ];
         };
       };
     };
 
     security = {
-      gpg = {
-        pinentryPackage = pkgs.pinentry-gnome3;
-      };
-
       sops = {
         defaultSopsFile = inputs.self + "/secrets/default.yaml";
-        age = {
-          keyFile = "/persist/home/${user}/.config/sops/age/keys.txt";
+        age.keyFile = "/persist/home/q.braendli/.config/sops/age/keys.txt";
+        secrets.up = {
+          mode = "0400";
+          owner = "root";
+          group = "root";
+          neededForUsers = true;
         };
-        secrets = {
-          up = {
-            mode = "0400";
-            owner = "root";
-            group = "root";
-            neededForUsers = true;
-          };
-          garnix-netrc = {
-            key = "garnix/netrc";
-            path = "/etc/nix/garnix-netrc";
-            mode = "0400";
-            owner = "root";
-            group = "root";
-            restartUnits = ["nix-daemon.service"];
-          };
-          github_token = {
-            key = "github_token";
-            mode = "0400";
-            owner = "${user}";
-            group = "${user}";
-          };
+        secrets.github-token = {
+          key = "github_token";
+          owner = "q.braendli";
+          group = "users";
+          mode = "0400";
+        };
+        secrets.qpcv1-borg-key = {
+          sopsFile = inputs.self + "/secrets/qpcv1-borg-key.yaml";
+          key = "qpcv1-borg-key";
+          path = "/persist/home/q.braendli/.ssh/borgbackup";
+          owner = "root";
+          group = "root";
+          mode = "0400";
+        };
+        secrets.borgbackup-eu-passphrase = {
+          key = "borgbackup-eu-passphrase";
+          owner = "root";
+          group = "root";
+          mode = "0400";
+        };
+        secrets.borgbackup-us-passphrase = {
+          key = "borgbackup-us-passphrase";
+          owner = "root";
+          group = "root";
+          mode = "0400";
         };
       };
 
-      yubikey = {
-        autoLock = false;
-        login = true;
-        u2f.mappings = {
-          "q.braendli" = [
-            ":WL1eNX3H4cqCpOdlFLskeKHVkf+SUVng34Ch6rxwn5gw+bJrTyH7wBaYE/iY0Rl4Ab0mNJrTtoUqjLaRNvhWbA==,DX5g1dye2T+mX8tNyMg05W3NrbDE527OCWv6BcUgb63H0zEu4BEl9zWlf3tVOINlqyHcS988QVzfzfHKXT5Abw==,es256,+presence"
-          ];
+    };
+
+    backup.borg = {
+      enable = true;
+      repositories = {
+        qnix-eu = "ssh://ctw144ps@ctw144ps.repo.borgbase.com/./repo";
+        qnix-us = "ssh://rgxzbo27@rgxzbo27.repo.borgbase.com/./repo";
+      };
+      sshKeyPath = config.sops.secrets.qpcv1-borg-key.path;
+      passphrasePaths = {
+        qnix-eu = config.sops.secrets.borgbackup-eu-passphrase.path;
+        qnix-us = config.sops.secrets.borgbackup-us-passphrase.path;
+      };
+    };
+
+    pentest.vms = {
+      managerUsers = [ "q.braendli" ];
+      machines = {
+        QPenT = {
+          installerIso = "/cache/home/q.braendli/Downloads/kali-linux-2026.2-installer-everything-amd64.iso";
+          memoryMiB = 16384;
+          vcpus = 8;
+          network.mode = "isolated-nat";
+        };
+        QPenL = {
+          installerIso = "/cache/home/q.braendli/Downloads/kali-linux-2026.2-installer-everything-amd64.iso";
+          memoryMiB = 12288;
+          vcpus = 6;
+          network.mode = "isolated-nat";
+        };
+        QPenA = {
+          installerIso = "/cache/home/q.braendli/Downloads/kali-linux-2026.2-installer-everything-amd64.iso";
+          memoryMiB = 16384;
+          vcpus = 8;
+          network.mode = "air-gapped";
+        };
+        QPenP = {
+          installerIso = "/cache/home/q.braendli/Downloads/kali-linux-2026.2-installer-everything-amd64.iso";
+          memoryMiB = 16384;
+          vcpus = 8;
+          network.mode = "isolated-nat";
         };
       };
     };
 
-    network = {
-      networkmanager.extraPlugins = ["networkmanager-openvpn"];
+    dev.git.githubTokenPath = config.sops.secrets.github-token.path;
 
-      wireguard = {
-        enable = true;
-        openFirewall = true;
-
-        tunnels.qf0xb = {
-          interfaceName = "wg0";
-          addresses = ["10.100.10.2/32"];
-          dns = ["10.10.10.254"];
-          privateKey.sopsSecret = "qpcv1-wg-qf0xb-private";
-          listenPort = 51820;
-          mtu = 1320;
-
-          peers.gateway = {
-            publicKey = "qE8kYQ6pd35CFjaaf8BbKyFdkJIhlX5N0x7WmOqivkU=";
-            presharedKey.sopsSecret = "qpcv1-wg-qf0xb-psk";
-            endpoint = "vpn.qf0xb.de:51820";
-            allowedIPs = ["10.10.10.0/24"];
-          };
-        };
-      };
+    desktop.client-pr-notify = {
+      enable = true;
+      githubTokenPath = config.sops.secrets.github-token.path;
     };
   };
 }

@@ -1,19 +1,12 @@
-# Development
-.direnv
+# Archived pre-SDK configuration. It remains available locally for reference,
+# but is deliberately outside the new client configuration history.
+old/
+
+# Development and build artefacts
+.direnv/
 result
 result-*
-
-# VM disk images
 *.qcow2
 *.qcow2.*
-
-.codex
-
-# EFI variables
 *.fd
-
-# Nix build artifacts
-*.drv
-
-# Old configuration
-old
+.codegraph/

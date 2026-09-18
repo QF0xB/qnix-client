@@ -1,130 +1,140 @@
 {
+  disko,
+  home-manager,
+  impermanence,
   inputs,
-  pkgs,
-  lib,
-  qnixLib,
-  specialArgs ? {},
-  ...
-}: let
-  defaultUser =
-    if specialArgs ? defaultUser
-    then specialArgs.defaultUser
-    else "q.braendli";
-
-  defaultProfiles = [
-    "dev"
-    "hyprland"
-    "nvf"
-    "personal"
-    "stylix"
-  ];
-
-  applyProfileOverrides = defaultProfiles': hostDef: let
-    baseProfiles = hostDef.profiles or defaultProfiles';
-    extraProfiles = (hostDef.extra or {}).profiles or [];
-    disabledProfiles = (hostDef.disable or {}).profiles or [];
-    mergedProfiles = lib.unique (baseProfiles ++ extraProfiles);
-  in
-    builtins.filter (profile: !(builtins.elem profile disabledProfiles)) mergedProfiles;
-
+  llm-agents,
+  mcp-servers-nix,
+  noctalia-shell,
+  nixpkgs,
+  nixos-hardware,
+  nvf,
+  sops-nix,
+  qnix-modules,
+  system,
+  stylix,
+}:
+let
   hosts = {
     QTestVM = {
-      user = defaultUser;
-      extra.profiles = [
-        "laptop"
+      user = "q.braendli";
+      vm = true;
+      nixosProfiles = [
+        "developer"
+        "hyprland"
+        "impermanence"
+        "appearance"
+      ];
+      homeProfiles = [
+        "developer"
+        "shell"
+        "hyprland"
+        "appearance"
       ];
     };
 
     QFrame13 = {
-      user = defaultUser;
-      extra.profiles = [
-        "laptop"
+      user = "q.braendli";
+      nixosProfiles = [
+        "developer"
+        "hyprland"
         "impermanence"
+        "appearance"
+        "laptop"
+      ];
+      homeProfiles = [
+        "developer"
+        "shell"
+        "hyprland"
+        "appearance"
       ];
     };
 
     QPCv1 = {
-      user = defaultUser;
-      extra.profiles = ["impermanence"];
-    };
-
-    QPCv2 = {
-      user = defaultUser;
-      extra.profiles = ["impermanence"];
+      user = "q.braendli";
+      nixosProfiles = [
+        "developer"
+        "hyprland"
+        "impermanence"
+        "nvidia"
+        "appearance"
+        "backup"
+        "secrets"
+        "pentesting"
+        "pentest-vms"
+      ];
+      homeProfiles = [
+        "developer"
+        "shell"
+        "hyprland"
+        "appearance"
+        "pentesting"
+      ];
     };
   };
 
-  mkHost = hostName: hostDef: let
-    user = hostDef.user or defaultUser;
-    profiles = applyProfileOverrides defaultProfiles hostDef;
-    hostPath = ./. + "/${hostName}";
-    extraArgs = {
-      inherit
-        inputs
-        qnixLib
-        hostName
-        user
-        profiles
-        ;
-    };
-  in
-    lib.nixosSystem {
-      inherit pkgs lib;
-
-      specialArgs = extraArgs;
-
-      modules =
-        [
-          inputs.stylix.nixosModules.stylix
-          "${hostPath}/configuration.nix"
-          "${hostPath}/qnix.nix"
-          "${hostPath}/hardware.nix"
-
-          inputs.impermanence.nixosModules.impermanence
-          inputs.sops-nix.nixosModules.sops
-          inputs.disko.nixosModules.disko
-
-          (import "${inputs.qnix-modules}/loader/nixos.nix" {
-            inherit lib;
-            inherit profiles;
-          })
-
-          inputs.home-manager.nixosModules.home-manager
-          {
-            qnix.system.shell.projectRoot = "/persist/home/${user}/projects/qnix/client";
-
-            nix.settings.trusted-users = [user];
-
-            home-manager = {
-              useGlobalPkgs = true;
-              backupFileExtension = "bak";
-
-              useUserPackages = true;
-              sharedModules = [
-                inputs.nvf.homeManagerModules.default
-                inputs.noctalia-shell.homeModules.default
-              ];
-              extraSpecialArgs =
-                extraArgs
-                // {
-                  qnixHomeStandalone = false;
-                };
-
-              users.${user} = {
-                imports = [
-                  (import "${inputs.qnix-modules}/loader/home.nix" {
-                    lib = inputs.nixpkgs.lib;
-                    inherit profiles;
-                  })
-                  "${hostPath}/home.nix"
-                ];
-              };
+  mkHost =
+    hostName: host:
+    let
+      hostQnix = qnix-modules.lib.mkQNix {
+        context = {
+          hostname = hostName;
+          inherit mcp-servers-nix;
+        }
+        // builtins.mapAttrs (_: value: value) (
+          builtins.removeAttrs host [
+            "user"
+            "nixosProfiles"
+            "homeProfiles"
+          ]
+        );
+      };
+    in
+    nixpkgs.lib.nixosSystem {
+      inherit system;
+      specialArgs = {
+        inherit inputs nixos-hardware;
+        qnix = hostQnix;
+      };
+      modules = [
+        {
+          nixpkgs = {
+            config.allowUnfree = true;
+            overlays = [ llm-agents.overlays.shared-nixpkgs ];
+          };
+        }
+        disko.nixosModules.disko
+        impermanence.nixosModules.impermanence
+        sops-nix.nixosModules.sops
+        stylix.nixosModules.stylix
+        home-manager.nixosModules.home-manager
+        ./${hostName}/configuration.nix
+        ./${hostName}/disko.nix
+        ./${hostName}/hardware.nix
+        ./qnix.nix
+        ./${hostName}/qnix.nix
+        {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            backupFileExtension = "backup";
+            sharedModules = [
+              nvf.homeManagerModules.default
+              noctalia-shell.homeModules.default
+            ];
+            extraSpecialArgs = {
+              inherit inputs;
+              qnix = hostQnix;
             };
-          }
-
-          (lib.mkAliasOptionModule ["hm"] ["home-manager" "users" user])
-        ]
-        ++ lib.optional (builtins.pathExists "${hostPath}/disko.nix") "${hostPath}/disko.nix";
+            users.${host.user} = {
+              imports = hostQnix.modulesFor.integratedHome host.homeProfiles ++ [
+                ./${hostName}/home.nix
+              ];
+            };
+          };
+        }
+      ]
+      ++ hostQnix.modulesFor.nixos host.nixosProfiles;
     };
 in
-  lib.mapAttrs mkHost hosts
+nixpkgs.lib.mapAttrs mkHost hosts

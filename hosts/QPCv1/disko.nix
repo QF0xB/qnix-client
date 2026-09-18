@@ -2,16 +2,15 @@
   lib,
   pkgs ? null,
   ...
-}:
-
-let
+}: let
   isImageBuild = builtins.getEnv "IS_IMAGE_BUILD" == "1";
 
   # This is a placeholder for the LUKS password file that is created during the image build
-  imageLuksPasswordFile = if isImageBuild then pkgs.writeText "luks-password" "changeme" else null;
-
-in
-{
+  imageLuksPasswordFile =
+    if isImageBuild
+    then pkgs.writeText "luks-password" "changeme"
+    else null;
+in {
   disko.devices = {
     disk.main = {
       type = "disk";
@@ -20,50 +19,54 @@ in
 
       content = {
         type = "gpt";
-        partitions = {
-          ESP = {
-            size = "1G";
-            type = "EF00";
-            content = {
-              type = "filesystem";
-              format = "vfat";
-              mountpoint = "/boot";
-              mountOptions = [ "umask=0077" ];
-            };
-          };
-        }
-        // lib.optionalAttrs (!isImageBuild) {
-          swap = {
-            size = "8G";
-            type = "8200";
-            content = {
-              type = "swap";
-            };
-          };
-        }
-        // {
-          root = {
-            size = "100%";
-            type = "8309"; # LUKS encrypted ZFS partition
-
-            content = {
-              type = "luks";
-              name = "cryptroot"; # /dev/mapper/cryptroot
-              passwordFile = if isImageBuild then "${imageLuksPasswordFile}" else "/tmp/luks-password"; # Only used during installation
-              settings =
-                lib.optionalAttrs isImageBuild {
-                  keyFile = "${imageLuksPasswordFile}";
-                }
-                // {
-                  allowDiscards = true;
-                };
+        partitions =
+          {
+            ESP = {
+              size = "1G";
+              type = "EF00";
               content = {
-                type = "zfs";
-                pool = "zroot";
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot";
+                mountOptions = ["umask=0077"];
+              };
+            };
+          }
+          // lib.optionalAttrs (!isImageBuild) {
+            swap = {
+              size = "8G";
+              type = "8200";
+              content = {
+                type = "swap";
+              };
+            };
+          }
+          // {
+            root = {
+              size = "100%";
+              type = "8309"; # LUKS encrypted ZFS partition
+
+              content = {
+                type = "luks";
+                name = "cryptroot"; # /dev/mapper/cryptroot
+                passwordFile =
+                  if isImageBuild
+                  then "${imageLuksPasswordFile}"
+                  else "/tmp/luks-password"; # Only used during installation
+                settings =
+                  lib.optionalAttrs isImageBuild {
+                    keyFile = "${imageLuksPasswordFile}";
+                  }
+                  // {
+                    allowDiscards = true;
+                  };
+                content = {
+                  type = "zfs";
+                  pool = "zroot";
+                };
               };
             };
           };
-        };
       };
     };
 

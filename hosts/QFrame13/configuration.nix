@@ -1,29 +1,20 @@
+{ ... }:
 {
-  pkgs,
-  lib,
-  user,
-  config,
-  ...
-}:
+  # Authentication is provided by the configured YubiKey PAM modules.
+  users.allowNoPasswordLogin = true;
 
-{
-  networking.hostName = "QFrame13";
-  networking.hostId = "a8b0cd00"; # Generate with: head -c 8 /etc/machine-id
-
-  services.hardware.bolt.enable = true;
-
-  system.stateVersion = "24.11";
-
-  # Enable nix-command experimental feature in the VM
-  nix = {
-    settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-
-      netrc-file = "/etc/nix/garnix-netrc";
-      narinfo-cache-positive-ttl = 3600;
-    };
+  networking = {
+    hostName = "QFrame13";
+    hostId = "a8b0cd00";
   };
+
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    narinfo-cache-positive-ttl = 3600;
+  };
+
+  system.stateVersion = "26.11";
 }

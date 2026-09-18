@@ -1,22 +1,9 @@
-{
-  lib,
-  pkgs ? null,
-  ...
-}:
-
-let
-  isImageBuild = builtins.getEnv "IS_IMAGE_BUILD" == "1";
-
-  # This is a placeholder for the LUKS password file that is created during the image build
-  imageLuksPasswordFile = if isImageBuild then pkgs.writeText "luks-password" "changeme" else null;
-
-in
+{ lib, ... }:
 {
   disko.devices = {
     disk.main = {
       type = "disk";
       device = "/dev/nvme0n1";
-
       content = {
         type = "gpt";
         partitions = {
@@ -30,32 +17,19 @@ in
               mountOptions = [ "umask=0077" ];
             };
           };
-        }
-        // lib.optionalAttrs (!isImageBuild) {
           swap = {
             size = "8G";
             type = "8200";
-            content = {
-              type = "swap";
-            };
+            content.type = "swap";
           };
-        }
-        // {
           root = {
             size = "100%";
-            type = "8309"; # LUKS encrypted ZFS partition
-
+            type = "8309";
             content = {
               type = "luks";
-              name = "cryptroot"; # /dev/mapper/cryptroot
-              passwordFile = if isImageBuild then "${imageLuksPasswordFile}" else "/tmp/luks-password"; # Only used during installation
-              settings =
-                lib.optionalAttrs isImageBuild {
-                  keyFile = "${imageLuksPasswordFile}";
-                }
-                // {
-                  allowDiscards = true;
-                };
+              name = "cryptroot";
+              passwordFile = "/tmp/luks-password";
+              settings.allowDiscards = true;
               content = {
                 type = "zfs";
                 pool = "zroot";
@@ -65,15 +39,12 @@ in
         };
       };
     };
-
     zpool.zroot = {
       type = "zpool";
-
       options = {
         ashift = "12";
         autotrim = "on";
       };
-
       rootFsOptions = {
         compression = "zstd";
         acltype = "posixacl";
@@ -81,8 +52,6 @@ in
         xattr = "sa";
         normalization = "formD";
       };
-
-      # “Ephemeral /” via rollback: keep / as its own dataset
       datasets = {
         root = {
           type = "zfs_fs";

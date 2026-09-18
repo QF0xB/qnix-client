@@ -1,8 +1,10 @@
 {
-  description = "QNix Client Configuration";
+  description = "QNix client configurations";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -31,63 +33,64 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
-
-    qnix-modules = {
-      # Managed by qnix-dev-modules and qnix-use-release.
-      url = "path:/persist/home/q.braendli/projects/qnix/modules";
-    };
-
-    qnix-pkgs = {
-      url = "github:QF0xB/qnix-pkgs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
 
-  nixConfig = {
-    extra-substituters = [
-      "https://cache.garnix.io"
-    ];
-    extra-trusted-public-keys = [
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-    ];
-  };
-
-  outputs = {nixpkgs, ...} @ inputs: let
-    system = "x86_64-linux";
-
-    pkgs = import nixpkgs {
-      inherit system;
-      config.allowUnfree = true;
-      overlays = [
-        inputs.qnix-pkgs.overlays.default
-      ];
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    qnixLib = inputs.qnix-modules.lib {
-      lib = nixpkgs.lib;
-      pkgs = pkgs;
+    mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
+
+    qnix-sdk.url = "github:QF0xB/qnix-sdk";
+
+    qnix-modules = {
+      # Managed by qnix-dev-modules and qnix-use-release.
+      url = "https://flakehub.com/f/QF0xB/qnix-modules/0.14.1";
+      inputs.qnix-sdk.follows = "qnix-sdk";
     };
+  };
 
-    lib = nixpkgs.lib.extend (_final: _prev: qnixLib);
-
-    nixosConfs = import ./hosts/nixos-hosts.nix {
-      inherit
-        inputs
-        pkgs
-        lib
-        qnixLib
-        ;
-      specialArgs = {
-        defaultUser = "q.braendli";
+  outputs =
+    inputs@{
+      nixpkgs,
+      nixos-hardware,
+      home-manager,
+      stylix,
+      noctalia-shell,
+      nvf,
+      impermanence,
+      sops-nix,
+      disko,
+      llm-agents,
+      mcp-servers-nix,
+      qnix-modules,
+      ...
+    }:
+    let
+      system = "x86_64-linux";
+    in
+    {
+      nixosConfigurations = import ./hosts/nixos-hosts.nix {
+        inherit
+          disko
+          home-manager
+          impermanence
+          sops-nix
+          inputs
+          llm-agents
+          noctalia-shell
+          nixpkgs
+          nixos-hardware
+          nvf
+          qnix-modules
+          mcp-servers-nix
+          system
+          stylix
+          ;
       };
     };
-  in {
-    nixosConfigurations = nixosConfs;
-  };
 }
