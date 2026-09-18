@@ -1,5 +1,8 @@
 { ... }:
 {
+  # Authentication is provided by the configured YubiKey PAM modules.
+  users.allowNoPasswordLogin = true;
+
   networking = {
     hostName = "QFrame13";
     hostId = "a8b0cd00";

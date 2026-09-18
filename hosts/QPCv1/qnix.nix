@@ -125,5 +125,10 @@
     };
 
     dev.git.githubTokenPath = config.sops.secrets.github-token.path;
+
+    desktop.client-pr-notify = {
+      enable = true;
+      githubTokenPath = config.sops.secrets.github-token.path;
+    };
   };
 }
