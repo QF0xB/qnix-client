@@ -45,7 +45,7 @@
 
     mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
 
-    qnix-sdk.url = "path:/persist/home/q.braendli/Projects/qnix/sdk";
+    qnix-sdk.url = "github:QF0xB/qnix-sdk";
 
     qnix-modules = {
       # Managed by qnix-dev-modules and qnix-use-release.

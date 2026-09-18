@@ -539,14 +539,17 @@
     },
     "qnix-sdk": {
       "locked": {
-        "lastModified": 1789587773,
-        "narHash": "sha256-mLHhejA5r7XE0dxAtbJZIAfTkDvj/MmaKVzQm70FcUk=",
-        "path": "/persist/home/q.braendli/Projects/qnix/sdk",
-        "type": "path"
+        "lastModified": 1788043997,
+        "narHash": "sha256-LbhZXCp1UwvLANEPUvlZqmi34/eN0ZCBIcv7Ytfo554=",
+        "owner": "QF0xB",
+        "repo": "qnix-sdk",
+        "rev": "00e1d28d822f2f7217089f7af3e2b0f1c47db540",
+        "type": "github"
       },
       "original": {
-        "path": "/persist/home/q.braendli/Projects/qnix/sdk",
-        "type": "path"
+        "owner": "QF0xB",
+        "repo": "qnix-sdk",
+        "type": "github"
       }
     },
     "root": {
