@@ -24,6 +24,7 @@ let
         "hyprland"
         "impermanence"
         "appearance"
+        "secrets"
       ];
       homeProfiles = [
         "developer"
@@ -41,6 +42,7 @@ let
         "impermanence"
         "appearance"
         "laptop"
+        "secrets"
       ];
       homeProfiles = [
         "developer"

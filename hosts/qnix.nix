@@ -1,12 +1,14 @@
 {
+  inputs,
   lib,
   pkgs,
+  config,
   ...
-}:
-{
+}: {
   # Client-wide defaults. A host can replace any of these in its own qnix.nix.
   nix.settings = {
     extra-substituters = [
+      "https://cache.flakehub.com"
       "https://cache.numtide.com"
       "https://nix-community.cachix.org"
     ];
@@ -16,16 +18,56 @@
     ];
   };
 
+  # The encrypted secret contains a root-only netrc entry for the cache.
+  nix.extraOptions = "netrc-file = ${config.sops.secrets.flakehub-cache.path}";
+
   qnix.system.users.defaultExtraGroups = lib.mkDefault [
     "audio"
     "video"
     "users"
+    "plugdev"
   ];
+
+  qnix.system.localisation.xkb = {
+    layout = "de,de,us";
+    variant = "koy,,";
+  };
+
+  qnix.system.users.users."q.braendli" = {
+    home = "/home/q.braendli";
+    description = "Quirin Brändli";
+    extraGroups = [ "wheel" ];
+  };
+
+  qnix.security.sops = {
+    defaultSopsFile = inputs.self + "/secrets/default.yaml";
+    age.keyFile = "/persist/home/q.braendli/.config/sops/age/keys.txt";
+    secrets.up = {
+      mode = "0400";
+      owner = "root";
+      group = "root";
+      neededForUsers = true;
+    };
+    secrets.github-token = {
+      key = "github_token";
+      owner = "q.braendli";
+      group = "users";
+      mode = "0400";
+    };
+    secrets.flakehub-cache = {
+      owner = "root";
+      group = "root";
+      mode = "0400";
+    };
+  };
+
+  qnix.dev.git.githubTokenPath = config.sops.secrets.github-token.path;
 
   qnix.desktop.client-pr-notify = {
     owner = "QF0xB";
     repo = "qnix-client";
     titleContains = "chore(flake): flake lock update";
+    githubTokenPath = config.sops.secrets.github-token.path;
   };
 
   qnix.security.yubikey = {
