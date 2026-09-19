@@ -43,6 +43,7 @@ let
         "appearance"
         "laptop"
         "secrets"
+        "backup"
       ];
       homeProfiles = [
         "developer"
