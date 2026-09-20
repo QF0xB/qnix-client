@@ -83,8 +83,6 @@
             );
         };
       };
-    in
-    {
       nixosConfigurations = import ./hosts/nixos-hosts.nix {
         inherit
           disko
