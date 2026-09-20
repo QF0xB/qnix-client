@@ -72,8 +72,6 @@
     }:
     let
       system = "x86_64-linux";
-    in
-    {
       nixosConfigurations = import ./hosts/nixos-hosts.nix {
         inherit
           disko
@@ -91,6 +89,14 @@
           system
           stylix
           ;
+      };
+    in
+    {
+      inherit nixosConfigurations;
+
+      checks.${system} = {
+        QPCv1 = nixosConfigurations.QPCv1.config.system.build.toplevel;
+        QFrame13 = nixosConfigurations.QFrame13.config.system.build.toplevel;
       };
     };
 }

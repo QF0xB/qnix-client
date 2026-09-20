@@ -20,4 +20,4 @@ jobs:
         with:
           flakehub-flake-name: "QF0xB/qnix-client"
       - name: "Run checks"
-        run: "nix flake check --keep-going --print-build-logs"
+        run: "nix flake check --no-build --keep-going --print-build-logs"
