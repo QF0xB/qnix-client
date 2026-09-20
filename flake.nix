@@ -72,6 +72,17 @@
     }:
     let
       system = "x86_64-linux";
+      mcpServersNix = mcp-servers-nix // {
+        lib = mcp-servers-nix.lib // {
+          evalModule = pkgs: config:
+            mcp-servers-nix.lib.evalModule pkgs (
+              pkgs.lib.recursiveUpdate config {
+                programs.filesystem.package =
+                  nixpkgs.legacyPackages.${system}.mcp-server-filesystem;
+              }
+            );
+        };
+      };
       nixosConfigurations = import ./hosts/nixos-hosts.nix {
         inherit
           disko
@@ -85,10 +96,10 @@
           nixos-hardware
           nvf
           qnix-modules
-          mcp-servers-nix
           system
           stylix
           ;
+        mcp-servers-nix = mcpServersNix;
       };
     in
     {
