@@ -11,14 +11,16 @@
       "https://cache.flakehub.com"
       "https://cache.numtide.com"
       "https://nix-community.cachix.org"
+      "https://cache.nix-ci.com"
     ];
     extra-trusted-public-keys = [
       "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "nix-ci:g3xV5BDTLtIBZr/A00IU1x0EtKKlb7YLgBN2SgYgM6A="
     ];
   };
 
-  # The encrypted secret contains a root-only netrc entry for the cache.
+  # The encrypted secret contains root-only netrc entries for authenticated caches.
   nix.extraOptions = "netrc-file = ${config.sops.secrets.flakehub-cache.path}";
 
   qnix.system.users.defaultExtraGroups = lib.mkDefault [
