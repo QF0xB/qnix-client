@@ -36,6 +36,7 @@ let
 
     QFrame13 = {
       user = "q.braendli";
+      laptop = true;
       nixosProfiles = [
         "developer"
         "hyprland"
