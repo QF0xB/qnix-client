@@ -103,5 +103,13 @@
           ;
         mcp-servers-nix = mcpServersNix;
       };
+    in
+    {
+      inherit nixosConfigurations;
+
+      checks.${system} = {
+        QPCv1 = nixosConfigurations.QPCv1.config.system.build.toplevel;
+        QFrame13 = nixosConfigurations.QFrame13.config.system.build.toplevel;
+      };
     };
 }

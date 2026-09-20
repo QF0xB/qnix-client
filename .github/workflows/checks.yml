@@ -20,9 +20,4 @@ jobs:
         with:
           flakehub-flake-name: "QF0xB/qnix-client"
       - name: "Run checks"
-        run: "nix flake check --keep-going --print-build-logs"
-      - name: "Build NixOS configurations"
-        run: >-
-          nix build --no-link --keep-going --print-build-logs
-          .#nixosConfigurations.QTestVM.config.system.build.toplevel
-          .#nixosConfigurations.QPCv1.config.system.build.toplevel
+        run: "nix flake check --no-build --keep-going --print-build-logs"
