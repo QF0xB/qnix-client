@@ -41,6 +41,46 @@
     extraGroups = [ "wheel" ];
   };
 
+  qnix.persist.users."*".directories = [ ".config/opencode" ];
+
+  environment.systemPackages = [
+    (pkgs.writeShellApplication {
+      name = "show-root-filesystem";
+      runtimeInputs = with pkgs; [
+        coreutils
+        fd
+        gawk
+        gnugrep
+        jq
+      ];
+      text = ''
+        exclude_args=()
+
+        if [[ -f /etc/impermanence.json ]]; then
+          while IFS= read -r path; do
+            [[ -n "$path" ]] && exclude_args+=(--exclude "$path")
+          done < <(jq -r '.directories[], .files[]' /etc/impermanence.json 2>/dev/null)
+        fi
+
+        sudo fd \
+          --one-file-system \
+          --base-directory / \
+          --type f \
+          --hidden \
+          "''${exclude_args[@]}" \
+          --exclude "/etc/{ssh,passwd,shadow}" \
+          --exclude "/var/cache/man" \
+          --exclude "*.timer" \
+          --exclude "/var/lib/NetworkManager" \
+          --exclude "/var/lib/sddm/.cache/" \
+          --exclude "/root/.cache" \
+          --exec stat --printf='%s %n\n' \
+        | sort -rn -k1 \
+        | awk '{ print $1, $2 }'
+      '';
+    })
+  ];
+
   qnix.security.sops = {
     defaultSopsFile = inputs.self + "/secrets/default.yaml";
     age.keyFile = "/persist/home/q.braendli/.config/sops/age/keys.txt";
