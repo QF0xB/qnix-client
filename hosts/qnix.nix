@@ -43,14 +43,7 @@
 
   qnix.persist.users."*".directories = [
     ".config/opencode"
-    ".local/share/keyrings"
   ];
-
-  services.gnome.gnome-keyring.enable = true;
-  security.pam.services = {
-    login.enableGnomeKeyring = true;
-    sddm.enableGnomeKeyring = true;
-  };
 
   environment.systemPackages = [
     (pkgs.writeShellApplication {
