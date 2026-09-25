@@ -4,11 +4,10 @@
   modulesPath,
   nixos-hardware,
   ...
-}:
-{
+}: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    nixos-hardware.nixosModules.framework-12th-gen-intel
+    nixos-hardware.nixosModules.framework-amd-ai-300-series
   ];
 
   boot.initrd.availableKernelModules = [
@@ -19,11 +18,11 @@
     "usbhid"
     "sd_mod"
   ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = ["kvm-intel"];
 
   services.fwupd = {
     enable = true;
-    extraRemotes = [ "lvfs-testing" ];
+    extraRemotes = ["lvfs-testing"];
     uefiCapsuleSettings.DisableCapsuleUpdateOnDisk = true;
   };
 
