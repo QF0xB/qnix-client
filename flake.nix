@@ -43,6 +43,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    paseo = {
+      url = "github:getpaseo/paseo/v0.9.2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
 
     qnix-sdk.url = "github:QF0xB/qnix-sdk";
@@ -66,6 +71,7 @@
       sops-nix,
       disko,
       llm-agents,
+      paseo,
       mcp-servers-nix,
       qnix-modules,
       ...

@@ -519,6 +519,27 @@
         "type": "github"
       }
     },
+    "paseo": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790244308,
+        "narHash": "sha256-8ko/EqTCWnAkUHnrRsVEK+dkNLCHRd89gmcoeOiVBV8=",
+        "owner": "getpaseo",
+        "repo": "paseo",
+        "rev": "c67b7158b441bb09026b38d86ae335cc4b49190a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "getpaseo",
+        "ref": "v0.9.2",
+        "repo": "paseo",
+        "type": "github"
+      }
+    },
     "qnix-modules": {
       "inputs": {
         "qnix-sdk": [
@@ -564,6 +585,7 @@
         "nixpkgs": "nixpkgs_4",
         "noctalia-shell": "noctalia-shell",
         "nvf": "nvf",
+        "paseo": "paseo",
         "qnix-modules": "qnix-modules",
         "qnix-sdk": "qnix-sdk",
         "sops-nix": "sops-nix",
