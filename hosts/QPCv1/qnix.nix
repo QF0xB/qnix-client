@@ -1,9 +1,20 @@
 {
   inputs,
   config,
+  pkgs,
   ...
 }:
 {
+  imports = [ inputs.paseo.nixosModules.default ];
+
+  services.paseo = {
+    enable = true;
+    user = "q.braendli";
+    package = inputs.paseo.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
+      npmDepsHash = "sha256-UXnB6q5tubKpTs+A5+u/NLSzc8ZK6rAsQs+kEphEKd8=";
+    };
+  };
+
   qnix = {
     dev = {
       jetbrains = {
