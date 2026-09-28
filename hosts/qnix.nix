@@ -103,6 +103,14 @@
       group = "root";
       mode = "0400";
     };
+    secrets.github-pull-key = {
+      sopsFile = inputs.self + "/secrets/github-pull-key.yaml";
+      key = "github_pull_key";
+      path = "/persist/home/q.braendli/.ssh/github-pull";
+      owner = "q.braendli";
+      group = "users";
+      mode = "0400";
+    };
   };
 
   qnix.dev.git.githubTokenPath = config.sops.secrets.github-token.path;
