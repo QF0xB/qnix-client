@@ -35,7 +35,7 @@
 
     security = {
       sops = {
-        secrets.qpcv1-borg-key = {
+        secrets.qpcv2-borg-key = {
           sopsFile = inputs.self + "/secrets/qpcv2-borg-key.yaml";
           key = "qpcv2-borg-key";
           path = "/persist/home/q.braendli/.ssh/borgbackup";
