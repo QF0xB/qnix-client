@@ -5,7 +5,6 @@
   inputs,
   llm-agents,
   mcp-servers-nix,
-  noctalia-shell,
   nixpkgs,
   nixos-hardware,
   nvf,
@@ -144,7 +143,6 @@
               backupFileExtension = "backup";
               sharedModules = [
                 nvf.homeManagerModules.default
-                noctalia-shell.homeModules.default
               ];
               extraSpecialArgs = {
                 inherit inputs;

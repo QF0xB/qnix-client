@@ -16,11 +16,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    noctalia-shell = {
-      url = "github:noctalia-dev/noctalia-shell/legacy-v4";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nvf = {
       url = "github:notashelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -44,7 +39,7 @@
     };
 
     paseo = {
-      url = "github:getpaseo/paseo/v0.9.2";
+      url = "github:getpaseo/paseo/v0.11.0-beta.3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -54,66 +49,65 @@
 
     qnix-modules = {
       # Managed by qnix-dev-modules and qnix-use-release.
-      url = "https://flakehub.com/f/QF0xB/qnix-modules/0.17.0";
+      url = "github:QF0xB/qnix-modules/754bddec066ba20b119f5774182e296b58bdc4bb";
       inputs.qnix-sdk.follows = "qnix-sdk";
     };
   };
 
-  outputs =
-    inputs@{
-      nixpkgs,
-      nixos-hardware,
-      home-manager,
-      stylix,
-      noctalia-shell,
-      nvf,
-      impermanence,
-      sops-nix,
-      disko,
-      llm-agents,
-      paseo,
-      mcp-servers-nix,
-      qnix-modules,
-      ...
-    }:
-    let
-      system = "x86_64-linux";
-      mcpServersNix = mcp-servers-nix // {
-        lib = mcp-servers-nix.lib // {
-          evalModule = pkgs: config:
-            mcp-servers-nix.lib.evalModule pkgs (
-              pkgs.lib.recursiveUpdate config {
-                programs.filesystem.package =
-                  nixpkgs.legacyPackages.${system}.mcp-server-filesystem;
-              }
-            );
-        };
+  outputs = inputs @ {
+    nixpkgs,
+    nixos-hardware,
+    home-manager,
+    stylix,
+    nvf,
+    impermanence,
+    sops-nix,
+    disko,
+    llm-agents,
+    paseo,
+    mcp-servers-nix,
+    qnix-modules,
+    ...
+  }: let
+    system = "x86_64-linux";
+    mcpServersNix =
+      mcp-servers-nix
+      // {
+        lib =
+          mcp-servers-nix.lib
+          // {
+            evalModule = pkgs: config:
+              mcp-servers-nix.lib.evalModule pkgs (
+                pkgs.lib.recursiveUpdate config {
+                  programs.filesystem.package =
+                    nixpkgs.legacyPackages.${system}.mcp-server-filesystem;
+                }
+              );
+          };
       };
-      nixosConfigurations = import ./hosts/nixos-hosts.nix {
-        inherit
-          disko
-          home-manager
-          impermanence
-          sops-nix
-          inputs
-          llm-agents
-          noctalia-shell
-          nixpkgs
-          nixos-hardware
-          nvf
-          qnix-modules
-          system
-          stylix
-          ;
-        mcp-servers-nix = mcpServersNix;
-      };
-    in
-    {
-      inherit nixosConfigurations;
-
-      checks.${system} = {
-        QPCv1 = nixosConfigurations.QPCv1.config.system.build.toplevel;
-        QFrame13 = nixosConfigurations.QFrame13.config.system.build.toplevel;
-      };
+    nixosConfigurations = import ./hosts/nixos-hosts.nix {
+      inherit
+        disko
+        home-manager
+        impermanence
+        sops-nix
+        inputs
+        llm-agents
+        nixpkgs
+        nixos-hardware
+        nvf
+        qnix-modules
+        system
+        stylix
+        ;
+      mcp-servers-nix = mcpServersNix;
     };
+  in {
+    inherit nixosConfigurations;
+
+    checks.${system} = {
+      QPCv1 = nixosConfigurations.QPCv1.config.system.build.toplevel;
+      QFrame13 = nixosConfigurations.QFrame13.config.system.build.toplevel;
+    };
+  };
 }
