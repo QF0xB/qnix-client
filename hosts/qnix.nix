@@ -5,6 +5,14 @@
   config,
   ...
 }: {
+  imports = [ inputs.paseo.nixosModules.default ];
+
+  qnix.apps.paseo.user = "q.braendli";
+
+  services.paseo.package = inputs.paseo.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
+    npmDepsHash = "sha256-4X3h5SM6xUr3kpJTPX+v3ABacDz7fS2VbJnN3/f0bkk=";
+  };
+
   # Client-wide defaults. A host can replace any of these in its own qnix.nix.
   nix.settings = {
     extra-substituters = [
