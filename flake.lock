@@ -502,16 +502,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1791160988,
-        "narHash": "sha256-HSwdH6JSkQWhtjZy8C5whaB8rMkw1xwbs5XtminaeBM=",
-        "rev": "68103aa0c12c74b36dbd2e3586035d4d302d17dd",
-        "revCount": 561,
+        "lastModified": 1791196271,
+        "narHash": "sha256-SJMaLAkat7ZIXltvARmxG5CwsiRN37iEn03BXjK33mU=",
+        "rev": "840246da90944177cdee387b34ee3762e25b979c",
+        "revCount": 564,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/QF0xB/qnix-modules/0.18.2/01a10984-58fb-7520-a47c-54810bfdfe6c/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/QF0xB/qnix-modules/0.18.3/01a10b9e-b013-7ee2-9a12-a4c912ecc854/source.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://flakehub.com/f/QF0xB/qnix-modules/0.18.2"
+        "url": "https://flakehub.com/f/QF0xB/qnix-modules/0.18.3"
       }
     },
     "qnix-sdk": {
