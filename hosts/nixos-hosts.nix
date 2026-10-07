@@ -43,12 +43,14 @@
         "laptop"
         "secrets"
         "backup"
+        "pentesting"
       ];
       homeProfiles = [
         "developer"
         "shell"
         "hyprland"
         "appearance"
+        "pentesting"
       ];
     };
 

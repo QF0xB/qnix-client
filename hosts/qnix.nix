@@ -5,13 +5,9 @@
   config,
   ...
 }: {
-  imports = [ inputs.paseo.nixosModules.default ];
+  imports = [inputs.paseo.nixosModules.default];
 
   qnix.apps.paseo.user = "q.braendli";
-
-  services.paseo.package = inputs.paseo.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
-    npmDepsHash = "sha256-4X3h5SM6xUr3kpJTPX+v3ABacDz7fS2VbJnN3/f0bkk=";
-  };
 
   # Client-wide defaults. A host can replace any of these in its own qnix.nix.
   nix.settings = {
@@ -46,50 +42,25 @@
   qnix.system.users.users."q.braendli" = {
     home = "/home/q.braendli";
     description = "Quirin Brändli";
-    extraGroups = [ "wheel" ];
+    extraGroups = ["wheel"];
   };
 
   qnix.persist.users."*".directories = [
     ".config/opencode"
   ];
 
-  environment.systemPackages = [
-    (pkgs.writeShellApplication {
-      name = "show-root-filesystem";
-      runtimeInputs = with pkgs; [
-        coreutils
-        fd
-        gawk
-        gnugrep
-        jq
-      ];
-      text = ''
-        exclude_args=()
-
-        if [[ -f /etc/impermanence.json ]]; then
-          while IFS= read -r path; do
-            [[ -n "$path" ]] && exclude_args+=(--exclude "$path")
-          done < <(jq -r '.directories[], .files[]' /etc/impermanence.json 2>/dev/null)
-        fi
-
-        sudo fd \
-          --one-file-system \
-          --base-directory / \
-          --type f \
-          --hidden \
-          "''${exclude_args[@]}" \
-          --exclude "/etc/{ssh,passwd,shadow}" \
-          --exclude "/var/cache/man" \
-          --exclude "*.timer" \
-          --exclude "/var/lib/NetworkManager" \
-          --exclude "/var/lib/sddm/.cache/" \
-          --exclude "/root/.cache" \
-          --exec stat --printf='%s %n\n' \
-        | sort -rn -k1 \
-        | awk '{ print $1, $2 }'
-      '';
-    })
-  ];
+  qnix.desktop.noctalia.calendar = {
+    enable = lib.mkDefault true;
+    subscriptions.primuss = {
+      name = lib.mkDefault "PRIMUSS timetable";
+      url = lib.mkDefault "https://www3.primuss.de/stpl/index.php?FH=fhin&Language=de&mode=ical&Session=d5dcb1b50db899e510b659196d3c233e&User=qub6184&sem=53&type=4";
+    };
+    icloud = {
+      enable = lib.mkDefault true;
+      email = lib.mkDefault "qbraendli@pm.me";
+      passwordFile = lib.mkDefault config.sops.secrets.apple-app-password.path;
+    };
+  };
 
   qnix.security.sops = {
     defaultSopsFile = inputs.self + "/secrets/default.yaml";
@@ -99,6 +70,12 @@
       owner = "root";
       group = "root";
       neededForUsers = true;
+    };
+    secrets.apple-app-password = {
+      key = "apple-app-password";
+      owner = "q.braendli";
+      group = "users";
+      mode = "0400";
     };
     secrets.github-token = {
       key = "github_token";
