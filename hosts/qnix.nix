@@ -123,5 +123,7 @@
   qnix.dev.git = {
     userName = "Quirin Brändli";
     userEmail = "qbraendli@pm.me";
+    githubSshIdentityFile = config.sops.secrets.github-pull-key.path;
+    githubSshIdentitiesOnly = true;
   };
 }
