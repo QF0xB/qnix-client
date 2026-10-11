@@ -39,7 +39,7 @@
     };
 
     paseo = {
-      url = "github:getpaseo/paseo/v0.11.0-beta.3";
+      url = "github:getpaseo/paseo/v0.11.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -49,7 +49,7 @@
 
     qnix-modules = {
       # Managed by qnix-dev-modules and qnix-use-release.
-      url = "path:/home/q.braendli/Projects/qnix/modules";
+      url = "https://flakehub.com/f/QF0xB/qnix-modules/0.20.3";
       inputs.qnix-sdk.follows = "qnix-sdk";
     };
   };
