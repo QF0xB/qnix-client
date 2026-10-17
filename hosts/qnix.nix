@@ -49,6 +49,11 @@
     ".config/opencode"
   ];
 
+  # Re-clonable upstream repositories survive reboots without entering backups.
+  qnix.persist.users."q.braendli".cache.directories = [
+    "Repositories"
+  ];
+
   qnix.desktop.noctalia.calendar = {
     enable = lib.mkDefault true;
     subscriptions.primuss = {
