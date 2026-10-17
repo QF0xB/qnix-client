@@ -49,7 +49,7 @@
 
     qnix-modules = {
       # Managed by qnix-dev-modules and qnix-use-release.
-      url = "https://flakehub.com/f/QF0xB/qnix-modules/0.20.3";
+      url = "https://flakehub.com/f/QF0xB/qnix-modules/0.21.1";
       inputs.qnix-sdk.follows = "qnix-sdk";
     };
   };
