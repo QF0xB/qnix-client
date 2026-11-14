@@ -38,18 +38,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    paseo = {
-      url = "github:getpaseo/paseo/v0.11.1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
 
     qnix-sdk.url = "github:QF0xB/qnix-sdk";
 
     qnix-modules = {
       # Managed by qnix-dev-modules and qnix-use-release.
-      url = "https://flakehub.com/f/QF0xB/qnix-modules/0.21.3";
+      url = "https://flakehub.com/f/QF0xB/qnix-modules/0.26.0";
       inputs.qnix-sdk.follows = "qnix-sdk";
     };
   };
@@ -64,7 +59,6 @@
     sops-nix,
     disko,
     llm-agents,
-    paseo,
     mcp-servers-nix,
     qnix-modules,
     ...

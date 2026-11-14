@@ -5,8 +5,6 @@
   config,
   ...
 }: {
-  imports = [inputs.paseo.nixosModules.default];
-
   qnix.apps.paseo.user = "q.braendli";
 
   # Client-wide defaults. A host can replace any of these in its own qnix.nix.
