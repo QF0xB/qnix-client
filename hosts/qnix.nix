@@ -22,8 +22,9 @@
     ];
   };
 
-  # The encrypted secret contains root-only netrc entries for authenticated caches.
+  # Root and members of nix-cache can read the authenticated cache credentials.
   nix.extraOptions = "netrc-file = ${config.sops.secrets.flakehub-cache.path}";
+  users.groups.nix-cache = {};
 
   qnix.system.users.defaultExtraGroups = lib.mkDefault [
     "audio"
@@ -40,7 +41,7 @@
   qnix.system.users.users."q.braendli" = {
     home = "/home/q.braendli";
     description = "Quirin Brändli";
-    extraGroups = ["wheel"];
+    extraGroups = ["wheel" "nix-cache"];
   };
 
   qnix.persist.users."*".directories = [
@@ -88,8 +89,8 @@
     };
     secrets.flakehub-cache = {
       owner = "root";
-      group = "root";
-      mode = "0400";
+      group = "nix-cache";
+      mode = "0440";
     };
     secrets.github-pull-key = {
       sopsFile = inputs.self + "/secrets/github-pull-key.yaml";
