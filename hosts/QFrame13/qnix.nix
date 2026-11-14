@@ -5,6 +5,10 @@
 }:
 {
   qnix = {
+    dev.jetbrains.rider = true;
+
+    hardware.laptop.lidSwitchExternalPower = "suspend";
+
     system.boot = {
       encrypted = true;
       loader = "systemd-boot";
